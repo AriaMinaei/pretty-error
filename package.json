@@ -1,0 +1,14 @@
+{
+  "name": "pretty-error",
+  "version": "0.0.0",
+  "description": "Readable error reports",
+  "main": "scripts/js/pretty-error.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "error"
+  ],
+  "author": "Aria Minaei",
+  "license": "MIT"
+}

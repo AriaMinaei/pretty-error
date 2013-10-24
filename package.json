@@ -1,14 +1,18 @@
 {
   "name": "pretty-error",
   "version": "0.0.0",
-  "description": "Readable error reports",
-  "main": "scripts/js/pretty-error.js",
+  "description": "",
+  "main": "scripts/js/lib/PrettyError.coffee",
+  "dependencies": {
+    "utila": "~0.1.0",
+    "RenderKid": "~0.2.0-beta.1"
+  },
+  "devDependencies": {
+    "little-popo": "~0.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "error"
-  ],
   "author": "Aria Minaei",
   "license": "MIT"
 }

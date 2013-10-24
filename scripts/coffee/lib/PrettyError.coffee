@@ -45,13 +45,13 @@ module.exports = class PrettyError
 
 		markup = @toMarkup e, skipModules
 
-		@_renderer.render(markup).then (rendered) ->
+		rendered = @_renderer.render(markup)
 
-			if logIt is yes
+		if logIt is yes
 
-				console.log rendered
+			console.log rendered
 
-			rendered
+		rendered
 
 	toMarkup: (e, skipModules = no) ->
 

@@ -26,13 +26,13 @@ it "should work", ->
 
 	p = new PrettyError
 
-describe "toMarkup"
+describe "getObject"
 
 it "should return a string", ->
 
 	p = new PrettyError
 
-	p.toMarkup(error "hello").should.be.a 'string'
+	p.getObject(error "hello").should.be.an 'object'
 
 describe "getStyle()"
 
@@ -66,7 +66,7 @@ it "should work", ->
 
 	e = error -> "a".should.equal "b"
 
-	# markup = p.toMarkup e
+	# markup = p.getObject e
 
 	# require('fs').writeFileSync 'f:/someFile.txt', markup, flag: 'w+'
 

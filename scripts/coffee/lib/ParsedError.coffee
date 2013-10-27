@@ -1,4 +1,5 @@
 sysPath = require 'path'
+utilaPath = require('utila').path
 
 module.exports = class ParsedError
 
@@ -89,8 +90,14 @@ module.exports = class ParsedError
 		# the js equivalent of that module
 		jsLine = null
 
-		# same as above
+		# like above
 		jsCol  = null
+
+		# path that doesn't include `node_module` dirs
+		shortenedPath = null
+
+		# like above
+		shortenedAddr = null
 
 		modName = '[current]'
 
@@ -153,6 +160,12 @@ module.exports = class ParsedError
 			jsLine = line
 			jsCol = col
 
+		if path?
+
+			shortenedPath = @_shortenPath path
+
+			shortenedAddr = shortenedPath + addr.substr(path.length, addr.length)
+
 		@_trace.push
 
 			original: original
@@ -166,6 +179,8 @@ module.exports = class ParsedError
 			jsLine: parseInt jsLine
 			jsCol: parseInt jsCol
 			modName: modName
+			shortenedPath: shortenedPath
+			shortenedAddr: shortenedAddr
 
 		return
 
@@ -192,6 +207,46 @@ module.exports = class ParsedError
 	_getTrace: ->
 
 		@_trace
+
+	_shortenPath: (path, nameForCurrentPackage) ->
+
+		path = String path
+
+		path = utilaPath.slashesOnly path
+
+		remaining = path
+
+		return path unless m = path.match /^(.+?)\/node_modules\/(.+)$/
+
+		parts = []
+
+		if typeof nameForCurrentPackage is 'string'
+
+			parts.push "[#{nameForCurrentPackage}]"
+
+		else
+
+			parts.push "[#{m[1].match(/([^\/]+)$/)[1]}]"
+
+		rest = m[2]
+
+		while m = rest.match /([^\/]+)\/node_modules\/(.+)$/
+
+			parts.push "[#{m[1]}]"
+
+			rest = m[2]
+
+		if m = rest.match /([^\/]+)\/(.+)$/
+
+			parts.push "[#{m[1]}]"
+
+			rest = m[2]
+
+		parts.push rest
+
+		parts.join "/"
+
+
 
 for prop in ['message', 'kind', 'arguments', 'type', 'stack', 'trace'] then do ->
 

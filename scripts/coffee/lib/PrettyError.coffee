@@ -43,15 +43,76 @@ module.exports = class PrettyError
 
 	render: (e, logIt = no, skipModules = no) ->
 
-		markup = @toMarkup e, skipModules
+		obj = @getObject e, skipModules
 
-		rendered = @_renderer.render(markup)
+		rendered = @_renderer.render(obj)
 
 		if logIt is yes
 
 			console.log rendered
 
 		rendered
+
+	getObject: (e, skipModules = no) ->
+
+		unless e instanceof ParsedError
+
+			e = new ParsedError e
+
+		unless typeof skipModules is 'boolean' or Array.isArray skipModules
+
+			throw Error "skipModules only accepts a boolean or an array of module names"
+
+		header =
+
+			kind: e.kind
+
+			colon: ':'
+
+			message: e.message
+
+		traceItems = []
+
+		for item, i in e.trace
+
+			if skipModules isnt no and i > 0
+
+				continue if skipModules is yes and item.modName is '[current]'
+
+				continue if item.modName in skipModules
+
+			traceItems.push item:
+
+				header:
+
+					pointer: do ->
+
+						unless item.file?
+
+							return ''
+
+						{
+							file: item.file
+
+							colon: ':'
+
+							line: item.line
+
+						}
+
+					what: item.what
+
+				footer:
+
+					addr: item.shortenedAddr
+
+		obj = 'pretty-error':
+
+			header: header
+
+			trace: traceItems
+
+		obj
 
 	toMarkup: (e, skipModules = no) ->
 
@@ -105,7 +166,7 @@ module.exports = class PrettyError
 
 			itemFooter = do ->
 
-				addr = wrap 'addr', q item.addr
+				addr = wrap 'addr', q item.shortenedAddr
 
 				wrap 'footer', addr
 

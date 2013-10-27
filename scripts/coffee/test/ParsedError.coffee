@@ -117,9 +117,21 @@ it "should include correct information about each trace item", ->
 		'what', 'path', 'addr',
 		'file', 'dir', 'col',
 		'line', 'jsCol', 'jsLine'
-		'modName'
+		'modName', 'shortenedPath', 'shortenedAddr'
 
 	item.path.should.equal module.filename
 
 	item.line.should.be.a 'number'
 	item.col.should.be.a 'number'
+
+describe "_shortenPath()"
+
+it "should work", ->
+
+	ParsedError::_shortenPath(
+		'F:\\a\\node_modules\\b\\node_modules\\d\\node_modules\\e\\f.js'
+	).should.equal '[a]/[b]/[d]/[e]/f.js'
+
+it "should return path when `node_modules` is not present", ->
+
+	ParsedError::_shortenPath('a/b\\c').should.equal 'a/b/c'

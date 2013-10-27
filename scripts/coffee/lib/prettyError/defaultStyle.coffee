@@ -21,6 +21,8 @@ module.exports = -> {
 
 		color: 'grey'
 
+		marginRight: 1
+
 	'pretty-error > header > message':
 
 		color: 'bright-white'
@@ -43,15 +45,15 @@ module.exports = -> {
 
 		display: 'block'
 
-	'pretty-error > trace > item > header > file':
+	'pretty-error > trace > item > header > pointer > file':
 
 		color: 'bright-yellow'
 
-	'pretty-error > trace > item > header > colon':
+	'pretty-error > trace > item > header > pointer > colon':
 
 		color: 'grey'
 
-	'pretty-error > trace > item > header > line':
+	'pretty-error > trace > item > header > pointer > line':
 
 		color: 'bright-yellow'
 

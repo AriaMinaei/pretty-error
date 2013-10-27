@@ -12,15 +12,11 @@ error = (what) ->
 
 			do what
 
-			return null
-
 		catch e
 
 			return e
 
-	else
-
-		throw Error "bar argument for error"
+	throw Error "bad argument for error"
 
 PrettyError = mod 'PrettyError'
 
@@ -64,16 +60,18 @@ it "should work", ->
 
 	p = new PrettyError
 
-	global.tip = yes
-
 	p.appendStyle 'pretty-error':
 
-		marginLeft: 7
+		marginLeft: 4
 
-	e = error(-> "a".should.equal "b")
+	e = error -> "a".should.equal "b"
 
-	markup = p.toMarkup e
+	# markup = p.toMarkup e
 
-	require('fs').writeFileSync 'f:/someFile.txt', markup, flag: 'w+'
+	# require('fs').writeFileSync 'f:/someFile.txt', markup, flag: 'w+'
 
 	p.render e, yes
+
+	e2 = error -> Array.split(Object)
+
+	p.render e2, yes

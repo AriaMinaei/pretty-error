@@ -66,10 +66,6 @@ it "should work", ->
 
 	e = error -> "a".should.equal "b"
 
-	# markup = p.getObject e
-
-	# require('fs').writeFileSync 'f:/someFile.txt', markup, flag: 'w+'
-
 	p.render e, yes
 
 	e2 = error -> Array.split(Object)

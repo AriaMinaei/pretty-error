@@ -5,10 +5,9 @@ module.exports = class ParsedError
 
 	constructor: (@error) ->
 
+		unless typeof @error is 'object'
 
-		unless @error instanceof Error
-
-			throw Error "Unrecognized Error type"
+			return new ParsedError new Error "Caught an error that is not a valid error type: #{@error}"
 
 		@_trace = []
 

@@ -34,7 +34,7 @@ it "should return a string", ->
 
 	p.getObject(error "hello").should.be.an 'object'
 
-describe "getStyle()"
+describe "style"
 
 it "should, by default, return the contents in prettyError/defaultStyle", ->
 
@@ -42,7 +42,7 @@ it "should, by default, return the contents in prettyError/defaultStyle", ->
 
 	defaultStyle = mod 'prettyError/defaultStyle'
 
-	p.getStyle().should.be.like defaultStyle()
+	p.style.should.be.like defaultStyle()
 
 it "should return different contents after appending some styles", ->
 
@@ -52,7 +52,7 @@ it "should return different contents after appending some styles", ->
 
 	defaultStyle = mod 'prettyError/defaultStyle'
 
-	p.getStyle().should.not.be.like defaultStyle()
+	p.style.should.not.be.like defaultStyle()
 
 describe "render()"
 

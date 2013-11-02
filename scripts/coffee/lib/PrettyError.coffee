@@ -19,7 +19,7 @@ module.exports = class PrettyError
 
 		@_renderer.style @_style
 
-	getStyle: ->
+	_getStyle: ->
 
 		@_style
 
@@ -118,7 +118,7 @@ module.exports = class PrettyError
 
 		obj
 
-for prop in ['renderer'] then do ->
+for prop in ['renderer', 'style'] then do ->
 
 	methodName = '_get' + prop[0].toUpperCase() + prop.substr(1, prop.length)
 

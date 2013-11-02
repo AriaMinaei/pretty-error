@@ -48,13 +48,13 @@ it "should accept ReferenceError() and other derivatives of Error()", ->
 
 	).should.not.throw()
 
-it "should not accept non errors", ->
+it "should accept non errors", ->
 
 	(->
 
 		e = new ParsedError 'some string'
 
-	).should.throw()
+	).should.not.throw()
 
 describe "message"
 

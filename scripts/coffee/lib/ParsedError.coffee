@@ -5,31 +5,71 @@ module.exports = class ParsedError
 
 	constructor: (@error) ->
 
-		unless typeof @error is 'object'
-
-			return new ParsedError new Error "Caught an error that is not a valid error type: #{@error}"
-
 		@_trace = []
 
 		do @_parse
 
 	_parse: ->
 
-		@_message = @error.message
-
-		stack = @error.stack
-
 		@_kind = 'Error'
 
-		if m = stack.match /^([a-zA-Z0-9\_\$]+):\ /
+		unless typeof @error is 'object'
 
-			@_kind = m[1]
+			@_message = String @error
 
-		do @_parseLines
+		else
 
-	_parseLines: ->
+			if @error.message?
 
-		text = @error.stack
+				@_message = String @error.message
+
+			else
+
+				@_message = ''
+
+			if @error.stack?
+
+				@_stack = @error.stack
+
+			else
+
+				@_stack = null
+
+			if @error.kind?
+
+				@_kind = String @error.kind
+
+			else if typeof @_stack is 'string'
+
+				if m = @_stack.match /^([a-zA-Z0-9\_\$]+):\ /
+
+					@_kind = m[1]
+
+			do @_parseTrace
+
+		return
+
+	_parseTrace: ->
+
+		if typeof @_stack is 'string'
+
+			@_parseTextAsStack @_stack
+
+		else if Array.isArray @_stack
+
+			@_parseArrayAsStack @_stack
+
+		return
+
+	_parseArrayAsStack: (a) ->
+
+		for item in a
+
+			@_trace.push String item
+
+		return
+
+	_parseTextAsStack: (text) ->
 
 		# remove the error kind
 		text = text.replace /^([a-zA-Z0-9\_\$]+):\ /, ''
@@ -43,12 +83,11 @@ module.exports = class ParsedError
 
 		for line in text.split "\n"
 
-			@_addTraceItem line
+			@_trace.push @_parseTraceItem line
 
 		return
 
-	_addTraceItem: (text) ->
-
+	_parseTraceItem: (text) ->
 
 		text = text.trim()
 
@@ -56,7 +95,7 @@ module.exports = class ParsedError
 
 		unless text.match /^at\ /
 
-			throw Error "cannot read line `#{text}`"
+			return text
 
 		# remove the 'at ' part
 		text = text.replace /^at /, ''
@@ -165,7 +204,7 @@ module.exports = class ParsedError
 
 			shortenedAddr = shortenedPath + addr.substr(path.length, addr.length)
 
-		@_trace.push
+		{
 
 			original: original
 			what: what
@@ -181,7 +220,7 @@ module.exports = class ParsedError
 			shortenedPath: shortenedPath
 			shortenedAddr: shortenedAddr
 
-		return
+		}
 
 	_getMessage: ->
 
@@ -193,7 +232,7 @@ module.exports = class ParsedError
 
 	_getStack: ->
 
-		@error.stack
+		@_stack
 
 	_getArguments: ->
 

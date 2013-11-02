@@ -69,6 +69,14 @@ module.exports = class PrettyError
 
 		for item, i in e.trace
 
+			if typeof item is 'string'
+
+				traceItems.push
+
+					item: custom: item
+
+				continue
+
 			if skipModules isnt no and i > 0
 
 				continue if skipModules is yes and item.modName is '[current]'

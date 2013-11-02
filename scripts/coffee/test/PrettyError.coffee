@@ -71,3 +71,23 @@ it "should work", ->
 	e2 = error -> Array.split(Object)
 
 	p.render e2, yes
+
+	e3 = "Plain error message"
+
+	p.render e3, yes
+
+	e4 =
+
+		message: "Custom error message"
+
+		kind: "Custom Error"
+
+	p.render e4, yes
+
+	e5 =
+
+		message: "Error with custom stack"
+
+		stack: ['line one', 'line two']
+
+	p.render e5, yes

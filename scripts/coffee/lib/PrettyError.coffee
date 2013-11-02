@@ -112,7 +112,9 @@ module.exports = class PrettyError
 
 			header: header
 
-			trace: traceItems
+		if traceItems.length > 0
+
+			obj['pretty-error'].trace = traceItems
 
 		obj
 

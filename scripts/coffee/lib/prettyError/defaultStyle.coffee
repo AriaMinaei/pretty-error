@@ -3,13 +3,9 @@ module.exports = -> {
 
 		display: 'block'
 
-		marginBottom: 1
-
 	'pretty-error > header':
 
 		display: 'block'
-
-		marginBottom: 1
 
 	'pretty-error > header > kind':
 
@@ -30,6 +26,8 @@ module.exports = -> {
 	'pretty-error > trace':
 
 		display: 'block'
+
+		marginTop: 1
 
 	'pretty-error > trace > item':
 

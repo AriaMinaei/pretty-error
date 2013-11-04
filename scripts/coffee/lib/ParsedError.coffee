@@ -13,6 +13,12 @@ module.exports = class ParsedError
 
 		@_kind = 'Error'
 
+		@_wrapper = ''
+
+		if @error.wrapper?
+
+			@_wrapper = String @error.wrapper
+
 		unless typeof @error is 'object'
 
 			@_message = String @error
@@ -230,6 +236,10 @@ module.exports = class ParsedError
 
 		@_kind
 
+	_getWrapper: ->
+
+		@_wrapper
+
 	_getStack: ->
 
 		@_stack
@@ -286,7 +296,7 @@ module.exports = class ParsedError
 
 
 
-for prop in ['message', 'kind', 'arguments', 'type', 'stack', 'trace'] then do ->
+for prop in ['message', 'kind', 'arguments', 'type', 'stack', 'trace', 'wrapper'] then do ->
 
 	methodName = '_get' + prop[0].toUpperCase() + prop.substr(1, prop.length)
 

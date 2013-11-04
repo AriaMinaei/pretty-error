@@ -59,7 +59,19 @@ module.exports = class PrettyError
 
 		header =
 
-			kind: e.kind
+			title: do ->
+
+				ret = {}
+
+
+				if e.wrapper isnt ''
+
+					ret.wrapper = e.wrapper + ":"
+
+				ret.kind = e.kind
+
+				ret
+
 
 			colon: ':'
 

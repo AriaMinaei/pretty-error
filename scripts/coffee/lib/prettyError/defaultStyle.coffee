@@ -7,9 +7,17 @@ module.exports = -> {
 
 		display: 'block'
 
-	'pretty-error > header > kind':
+	'pretty-error > header > title > kind':
 
 		background: 'red'
+
+		color: 'bright-white'
+
+	'pretty-error > header > title > wrapper':
+
+		# background: 'cyan'
+
+		margin: '0 1'
 
 		color: 'bright-white'
 

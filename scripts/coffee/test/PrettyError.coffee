@@ -90,4 +90,6 @@ it "should work", ->
 
 		stack: ['line one', 'line two']
 
+		wrapper: 'UnhandledRejection'
+
 	p.render e5, yes

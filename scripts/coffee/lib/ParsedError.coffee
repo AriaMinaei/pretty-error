@@ -1,5 +1,4 @@
 sysPath = require 'path'
-utilaPath = require('utila').path
 
 module.exports = class ParsedError
 
@@ -260,7 +259,7 @@ module.exports = class ParsedError
 
 		path = String path
 
-		path = utilaPath.slashesOnly path
+		path = path.replace('\\\\', '/').replace('\\', '/')
 
 		remaining = path
 

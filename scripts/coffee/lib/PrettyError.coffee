@@ -81,6 +81,8 @@ module.exports = class PrettyError
 
 		for item, i in e.trace
 
+			continue unless item?
+
 			if typeof item is 'string'
 
 				traceItems.push

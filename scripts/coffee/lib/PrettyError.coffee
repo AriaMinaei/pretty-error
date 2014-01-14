@@ -35,9 +35,9 @@ module.exports = class PrettyError
 
 		@_renderer
 
-	render: (e, logIt = no, skipModules = no) ->
+	render: (e, logIt = no, skipModules = no, maxTraceItems) ->
 
-		obj = @getObject e, skipModules
+		obj = @getObject e, skipModules, maxTraceItems
 
 		rendered = @_renderer.render(obj)
 
@@ -47,7 +47,7 @@ module.exports = class PrettyError
 
 		rendered
 
-	getObject: (e, skipModules = no) ->
+	getObject: (e, skipModules = no, maxTraceItems = 50) ->
 
 		unless e instanceof ParsedError
 
@@ -79,9 +79,15 @@ module.exports = class PrettyError
 
 		traceItems = []
 
+		count = -1
+
 		for item, i in e.trace
 
 			continue unless item?
+
+			count++
+
+			break if count > maxTraceItems
 
 			if typeof item is 'string'
 

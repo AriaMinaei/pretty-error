@@ -13,11 +13,45 @@ module.exports = class PrettyError
 
 	constructor: ->
 
+		@_maxItems = 50
+
+		@_modulesToSkip = []
+
+		@_pathsToSkip = []
+
+		@_skipCallbacks = []
+
 		@_renderer = new RenderKid
 
 		@_style = self._getDefaultStyle()
 
 		@_renderer.style @_style
+
+	skipModule: (modName) ->
+
+		@_modulesToSkip.push String modName
+
+		@
+
+	skipPath: (fileName) ->
+
+		@_pathsToSkip.push fileName
+
+		@
+
+	skip: (cb) ->
+
+		@_skipCallbacks.push cb
+
+		@
+
+	setMaxItems: (maxItems = 50) ->
+
+		if maxItems is 0 then maxItems = 1000
+
+		@_maxItems = maxItems|0
+
+		@
 
 	_getStyle: ->
 
@@ -35,9 +69,9 @@ module.exports = class PrettyError
 
 		@_renderer
 
-	render: (e, logIt = no, skipModules = no, maxTraceItems) ->
+	render: (e, logIt = no) ->
 
-		obj = @getObject e, skipModules, maxTraceItems
+		obj = @getObject e
 
 		rendered = @_renderer.render(obj)
 
@@ -47,15 +81,29 @@ module.exports = class PrettyError
 
 		rendered
 
-	getObject: (e, skipModules = no, maxTraceItems = 50) ->
+	_skipOrFilter: (item, itemNumber) ->
+
+		if typeof item is 'object'
+
+			return yes if item.modName in @_modulesToSkip
+
+			return yes if item.path in @_pathsToSkip
+
+			for modName in item.modules
+
+				return yes if modName in @_modulesToSkip
+
+		for cb in @_skipCallbacks
+
+			return yes if cb(item, itemNumber) is yes
+
+		return no
+
+	getObject: (e) ->
 
 		unless e instanceof ParsedError
 
 			e = new ParsedError e
-
-		unless typeof skipModules is 'boolean' or Array.isArray skipModules
-
-			throw Error "skipModules only accepts a boolean or an array of module names"
 
 		header =
 
@@ -63,7 +111,8 @@ module.exports = class PrettyError
 
 				ret = {}
 
-
+				# some errors are thrown to display other errors.
+				# we call them wrappers here.
 				if e.wrapper isnt ''
 
 					ret.wrapper = e.wrapper + ":"
@@ -71,7 +120,6 @@ module.exports = class PrettyError
 				ret.kind = e.kind
 
 				ret
-
 
 			colon: ':'
 
@@ -85,9 +133,13 @@ module.exports = class PrettyError
 
 			continue unless item?
 
+			if @_skipOrFilter(item, i) is yes
+
+				continue
+
 			count++
 
-			break if count > maxTraceItems
+			break if count > @_maxItems
 
 			if typeof item is 'string'
 
@@ -96,12 +148,6 @@ module.exports = class PrettyError
 					item: custom: item
 
 				continue
-
-			if skipModules isnt no and i > 0
-
-				continue if skipModules is yes and item.modName is '[current]'
-
-				continue if item.modName in skipModules
 
 			traceItems.push item:
 

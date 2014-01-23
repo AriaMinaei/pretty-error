@@ -160,6 +160,8 @@ module.exports = class ParsedError
 
 			addr = text.trim()
 
+		addr = @_fixPath addr
+
 		remaining = addr
 
 		# remove the <js> clause if the file is a compiled one
@@ -188,9 +190,13 @@ module.exports = class ParsedError
 
 			if dir is '.' then dir = ''
 
+			path = @_fixPath path
+			file = @_fixPath file
+			dir = @_fixPath dir
+
 		if dir?
 
-			d = dir.replace ///\\///g, '/'
+			d = dir.replace /[\\]{1,2}/g, '/'
 
 			if m = d.match ///
 					node_modules/([^/]+)(?!.*node_modules.*)
@@ -205,9 +211,13 @@ module.exports = class ParsedError
 
 		if path?
 
-			shortenedPath = @_shortenPath path
+			r = @_rectifyPath path
+
+			shortenedPath = r.path
 
 			shortenedAddr = shortenedPath + addr.substr(path.length, addr.length)
+
+			modules = r.modules
 
 		{
 
@@ -224,6 +234,7 @@ module.exports = class ParsedError
 			modName: modName
 			shortenedPath: shortenedPath
 			shortenedAddr: shortenedAddr
+			modules: modules || []
 
 		}
 
@@ -255,25 +266,35 @@ module.exports = class ParsedError
 
 		@_trace
 
-	_shortenPath: (path, nameForCurrentPackage) ->
+	_fixPath: (path) ->
+
+		path.replace(///[\\]{1,2}///g, '/')
+
+	_rectifyPath: (path, nameForCurrentPackage) ->
 
 		path = String path
 
-		path = path.replace('\\\\', '/').replace('\\', '/')
-
 		remaining = path
 
-		return path unless m = path.match /^(.+?)\/node_modules\/(.+)$/
+		unless m = path.match /^(.+?)\/node_modules\/(.+)$/
+
+			return {path: path, modules: []}
 
 		parts = []
+
+		modules = []
 
 		if typeof nameForCurrentPackage is 'string'
 
 			parts.push "[#{nameForCurrentPackage}]"
 
+			modules.push "[#{nameForCurrentPackage}]"
+
 		else
 
 			parts.push "[#{m[1].match(/([^\/]+)$/)[1]}]"
+
+			modules.push m[1].match(/([^\/]+)$/)[1]
 
 		rest = m[2]
 
@@ -281,17 +302,24 @@ module.exports = class ParsedError
 
 			parts.push "[#{m[1]}]"
 
+			modules.push m[1]
+
 			rest = m[2]
 
 		if m = rest.match /([^\/]+)\/(.+)$/
 
 			parts.push "[#{m[1]}]"
 
+			modules.push m[1]
+
 			rest = m[2]
 
 		parts.push rest
 
-		parts.join "/"
+		{
+			path: parts.join "/"
+			modules: modules
+		}
 
 
 

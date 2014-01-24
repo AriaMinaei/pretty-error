@@ -17,7 +17,7 @@ module.exports = -> {
 
 		margin: '0 1'
 
-		color: 'bright-white'
+		color: 'grey'
 
 	'pretty-error > header > colon':
 

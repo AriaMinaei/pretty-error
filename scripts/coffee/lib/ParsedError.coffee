@@ -105,7 +105,7 @@ module.exports = class ParsedError
 		# remove the 'at ' part
 		text = text.replace /^at /, ''
 
-		return if text is 'Error (<anonymous>)'
+		return if text in ['Error (<anonymous>)', 'Error (<anonymous>:null:null)']
 
 		original = text
 

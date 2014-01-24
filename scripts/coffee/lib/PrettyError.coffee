@@ -290,7 +290,7 @@ module.exports = class PrettyError
 				# we call them wrappers here.
 				if e.wrapper isnt ''
 
-					ret.wrapper = e.wrapper + ":"
+					ret.wrapper = "#{e.wrapper}"
 
 				ret.kind = e.kind
 

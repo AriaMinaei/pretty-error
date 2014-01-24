@@ -27,23 +27,51 @@ module.exports = class PrettyError
 
 		@_renderer.style @_style
 
-	skipModule: (modName) ->
+	config: (c) ->
 
-		@_modulesToSkip.push String modName
+		if c.modulesToSkip?
+
+			@skipModule.apply @, c.modulesToSkip
+
+		if c.pathsToSkip?
+
+			@skipPath.apply @, c.pathsToSkip
+
+		if c.skip?
+
+			@skip.apply @, c.skip
+
+		if c.maxItems?
+
+			@setMaxItems c.maxItems
+
+		if c.skipNodeFiles
+
+			@skipNodeFiles()
 
 		@
 
-	skipPath: (fileName) ->
+	skipModule: (modNames...) ->
 
-		@_pathsToSkip.push fileName
+		@_modulesToSkip.push String modName for modName in modNames
+
+		@
+
+	skipPath: (fileNames...) ->
+
+		@_pathsToSkip.push fileName for fileName in fileNames
 
 		@
 
-	skip: (cb) ->
+	skip: (callbacks...) ->
 
-		@_skipCallbacks.push cb
+		@_skipCallbacks.push cb for cb in callbacks
 
 		@
+
+	skipNodeFiles: ->
+
+		@skipPath 'timers.js'
 
 	setMaxItems: (maxItems = 50) ->
 
@@ -96,6 +124,8 @@ module.exports = class PrettyError
 		for cb in @_skipCallbacks
 
 			return yes if cb(item, itemNumber) is yes
+
+		# console.log item
 
 		return no
 

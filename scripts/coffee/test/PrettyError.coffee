@@ -60,6 +60,8 @@ it "should work", ->
 
 	p = new PrettyError
 
+	p.skipNodeFiles()
+
 	p.appendStyle 'pretty-error':
 
 		marginLeft: 4

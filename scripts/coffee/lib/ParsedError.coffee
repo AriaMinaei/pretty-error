@@ -105,6 +105,8 @@ module.exports = class ParsedError
 		# remove the 'at ' part
 		text = text.replace /^at /, ''
 
+		return if text is 'Error (<anonymous>)'
+
 		original = text
 
 		# the part that comes before the address
@@ -142,7 +144,7 @@ module.exports = class ParsedError
 		# like above
 		shortenedAddr = null
 
-		modName = '[current]'
+		packageName = '[current]'
 
 		# pick out the address
 		if m = text.match /\(([^\)]+)\)$/
@@ -202,7 +204,7 @@ module.exports = class ParsedError
 					node_modules/([^/]+)(?!.*node_modules.*)
 				///
 
-				modName = m[1]
+				packageName = m[1]
 
 		unless jsLine?
 
@@ -217,7 +219,7 @@ module.exports = class ParsedError
 
 			shortenedAddr = shortenedPath + addr.substr(path.length, addr.length)
 
-			modules = r.modules
+			packages = r.packages
 
 		{
 
@@ -231,10 +233,10 @@ module.exports = class ParsedError
 			col: parseInt col
 			jsLine: parseInt jsLine
 			jsCol: parseInt jsCol
-			modName: modName
+			packageName: packageName
 			shortenedPath: shortenedPath
 			shortenedAddr: shortenedAddr
-			modules: modules || []
+			packages: packages || []
 
 		}
 
@@ -278,23 +280,23 @@ module.exports = class ParsedError
 
 		unless m = path.match /^(.+?)\/node_modules\/(.+)$/
 
-			return {path: path, modules: []}
+			return {path: path, packages: []}
 
 		parts = []
 
-		modules = []
+		packages = []
 
 		if typeof nameForCurrentPackage is 'string'
 
 			parts.push "[#{nameForCurrentPackage}]"
 
-			modules.push "[#{nameForCurrentPackage}]"
+			packages.push "[#{nameForCurrentPackage}]"
 
 		else
 
 			parts.push "[#{m[1].match(/([^\/]+)$/)[1]}]"
 
-			modules.push m[1].match(/([^\/]+)$/)[1]
+			packages.push m[1].match(/([^\/]+)$/)[1]
 
 		rest = m[2]
 
@@ -302,7 +304,7 @@ module.exports = class ParsedError
 
 			parts.push "[#{m[1]}]"
 
-			modules.push m[1]
+			packages.push m[1]
 
 			rest = m[2]
 
@@ -310,7 +312,7 @@ module.exports = class ParsedError
 
 			parts.push "[#{m[1]}]"
 
-			modules.push m[1]
+			packages.push m[1]
 
 			rest = m[2]
 
@@ -318,7 +320,7 @@ module.exports = class ParsedError
 
 		{
 			path: parts.join "/"
-			modules: modules
+			packages: packages
 		}
 
 

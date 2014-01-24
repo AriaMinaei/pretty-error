@@ -1,11 +1,22 @@
+{object, array} = require 'utila'
 defaultStyle = require './PrettyError/defaultStyle'
 ParsedError = require './ParsedError'
+nodePaths = require './nodePaths'
 RenderKid = require 'RenderKid'
-{object} = require 'utila'
 
 module.exports = class PrettyError
 
 	self = @
+
+	@_filters:
+
+		'module.exports': (item) ->
+
+			return unless item.what?
+
+			item.what = item.what.replace /\.module\.exports\./g, ' - '
+
+			return
 
 	@_getDefaultStyle: ->
 
@@ -15,11 +26,15 @@ module.exports = class PrettyError
 
 		@_maxItems = 50
 
-		@_modulesToSkip = []
+		@_packagesToSkip = []
 
 		@_pathsToSkip = []
 
 		@_skipCallbacks = []
+
+		@_filterCallbacks = []
+
+		@_aliases = []
 
 		@_renderer = new RenderKid
 
@@ -29,37 +44,103 @@ module.exports = class PrettyError
 
 	config: (c) ->
 
-		if c.modulesToSkip?
+		if c.skipPackages?
 
-			@skipModule.apply @, c.modulesToSkip
+			if c.skipPackages is no
 
-		if c.pathsToSkip?
+				@unskipAllPackages()
 
-			@skipPath.apply @, c.pathsToSkip
+			else
+
+				@skipPackage.apply @, c.skipPackages
+
+		if c.skipPaths?
+
+			if c.skipPaths is no
+
+				@unskipAllPaths()
+
+			else
+
+				@skipPath.apply @, c.skipPaths
 
 		if c.skip?
 
-			@skip.apply @, c.skip
+			if c.skip is no
+
+				@unskipAll()
+
+			else
+
+				@skip.apply @, c.skip
 
 		if c.maxItems?
 
 			@setMaxItems c.maxItems
 
-		if c.skipNodeFiles
+		if c.skipNodeFiles is yes
 
 			@skipNodeFiles()
 
+		else if c.skipNodeFiles is no
+
+			@unskipNodeFiles()
+
+		if c.filters?
+
+			if c.filters is no
+
+				@removeAllFilters()
+
+			else
+
+				@filters.apply @, c.filters
+
+		if c.aliases?
+
+			if object.isBareObject c.aliases
+
+				@alias path, alias for path, alias of c.aliases
+
+			else if c.aliases is no
+
+				@removeAllAliases()
+
 		@
 
-	skipModule: (modNames...) ->
+	skipPackage: (packages...) ->
 
-		@_modulesToSkip.push String modName for modName in modNames
+		@_packagesToSkip.push String pkg for pkg in packages
 
 		@
 
-	skipPath: (fileNames...) ->
+	unskipPackage: (packages...) ->
 
-		@_pathsToSkip.push fileName for fileName in fileNames
+		array.pluckOneItem(@_packagesToSkip, pkg) for pkg in packages
+
+		@
+
+	unskipAllPackages: ->
+
+		@_packagesToSkip.length = 0
+
+		@
+
+	skipPath: (paths...) ->
+
+		@_pathsToSkip.push path for path in paths
+
+		@
+
+	unskipPath: (paths...) ->
+
+		array.pluckOneItem(@_pathsToSkip, path) for path in paths
+
+		@
+
+	unskipAllPaths: ->
+
+		@_pathsToSkip.length = 0
 
 		@
 
@@ -69,15 +150,69 @@ module.exports = class PrettyError
 
 		@
 
+	unskip: (callbacks...) ->
+
+		array.pluckOneItem(@_skipCallbacks, cb) for cb in callbacks
+
+		@
+
+	unskipAll: ->
+
+		@_skipCallbacks.length = 0
+
+		@
+
 	skipNodeFiles: ->
 
-		@skipPath 'timers.js'
+		@skipPath.apply @, nodePaths
+
+	unskipNodeFiles: ->
+
+		@unskipPath.apply @, nodePaths
+
+	filter: (callbacks...) ->
+
+		@_filterCallbacks.push cb for cb in callbacks
+
+		@
+
+	removeFilter: (callbacks...) ->
+
+		array.pluckOneItem(@_filterCallbacks, cb) for cb in callbacks
+
+		@
+
+	removeAllFilters: ->
+
+		@_filterCallbacks.length = 0
+
+		@
 
 	setMaxItems: (maxItems = 50) ->
 
 		if maxItems is 0 then maxItems = 1000
 
 		@_maxItems = maxItems|0
+
+		@
+
+	alias: (stringOrRx, alias) ->
+
+		@_aliases.push {stringOrRx, alias}
+
+		@
+
+	removeAlias: (stringOrRx) ->
+
+		array.pluckByCallback @_aliases, (pair) ->
+
+			pair.stringOrRx is stringOrRx
+
+		@
+
+	removeAllAliases: ->
+
+		@_aliases.length = 0
 
 		@
 
@@ -105,7 +240,7 @@ module.exports = class PrettyError
 
 		if logIt is yes
 
-			console.log rendered
+			console.error rendered
 
 		rendered
 
@@ -113,19 +248,29 @@ module.exports = class PrettyError
 
 		if typeof item is 'object'
 
-			return yes if item.modName in @_modulesToSkip
+			return yes if item.modName in @_packagesToSkip
 
 			return yes if item.path in @_pathsToSkip
 
-			for modName in item.modules
+			for modName in item.packages
 
-				return yes if modName in @_modulesToSkip
+				return yes if modName in @_packagesToSkip
+
+			if typeof item.shortenedAddr is 'string'
+
+				for pair in @_aliases
+
+					item.shortenedAddr = item.shortenedAddr.replace pair.stringOrRx,
+
+						pair.alias
 
 		for cb in @_skipCallbacks
 
 			return yes if cb(item, itemNumber) is yes
 
-		# console.log item
+		for cb in @_filterCallbacks
+
+			cb(item, itemNumber)
 
 		return no
 
@@ -200,9 +345,13 @@ module.exports = class PrettyError
 
 					what: item.what
 
-				footer:
+				footer: do ->
 
-					addr: item.shortenedAddr
+					foooter = addr: item.shortenedAddr
+
+					if item.extra? then foooter.extra = item.extra
+
+					foooter
 
 		obj = 'pretty-error':
 

@@ -15,8 +15,6 @@ module.exports = -> {
 
 	'pretty-error > header > title > wrapper':
 
-		# background: 'cyan'
-
 		margin: '0 1'
 
 		color: 'bright-white'
@@ -45,7 +43,7 @@ module.exports = -> {
 
 		marginLeft: 2
 
-		bullet: '"<grey>o</grey>"'
+		bullet: '"<grey>-</grey>"'
 
 	'pretty-error > trace > item > header':
 
@@ -70,6 +68,14 @@ module.exports = -> {
 		display: 'block'
 
 	'pretty-error > trace > item > footer > addr':
+
+		display: 'block'
+
+		color: 'grey'
+
+	'pretty-error > trace > item > footer > extra':
+
+		display: 'block'
 
 		color: 'grey'
 }

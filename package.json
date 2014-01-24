@@ -1,6 +1,6 @@
 {
   "name": "pretty-error",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "main": "scripts/js/lib/PrettyError.js",
   "dependencies": {
@@ -16,5 +16,12 @@
     "prepublish": "node ./node_modules/coffee-script/bin/cake build"
   },
   "author": "Aria Minaei",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AriaMinaei/pretty-error.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AriaMinaei/pretty-error/issues"
+  }
 }

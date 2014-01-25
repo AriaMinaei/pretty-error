@@ -172,3 +172,109 @@ pe.adppendStyle({
 
 Here is how our minimal theme will look like:
 ![screenshot of our custom theme](https://github.com/AriaMinaei/pretty-error/raw/master/docs/images/custom-theme-screenshot.png)
+
+I'll post more examples on [RenderKid](https://github.com/AriaMinaei/renderkid) when it comes out of beta.
+
+## Customization
+
+There are a few methods to help you customize the contents of your error logs:
+
+Let's instantiate first:
+```javascript
+PrettyError = require('pretty-error');
+pe = new PrettyError();
+
+// or:
+pe = require('pretty-error').start();
+```
+
+#### Shortening paths
+You might want to substitute long paths with shorter, more readable aliases:
+```javascript
+pe.alias('E:/open-source/theatrejs/scripts/js', '(Theare.js)');
+
+// to remove the alias:
+pe.removeAlias('E:/open-source/theatrejs/scripts/js');
+
+// or:
+pe.removeAllAliases();
+```
+
+#### Skipping packages
+You might want to skip trace lines that belong to specific packages (chai, when, socket.io):
+```javascript
+pe.skipPackage('chai', 'when', 'socket.io');
+
+// to unskip:
+pe.unskipPackage('socket.io');
+```
+
+#### Skipping node files
+```javascript
+// this will skip node.js, path.js, event.js, etc.
+pe.skipNodeFiles();
+
+// also:
+pe.unskipNodeFiles();
+pe.unskipAllPackages();
+```
+
+#### Skipping paths
+```javascript
+pe.skipPath('/home/dir/someFile.js');
+
+// also:
+pe.unskipPath('/home/dir/someFile.js');
+pe.unskipAllPaths();
+```
+
+#### Skipping by callback
+You can customize which trace lines get logged and which won't:
+```javascript
+pe.skip(function(traceLine, lineNumber){
+
+	// if we know which package this trace line comes from, and it isn't
+	// our 'demo' package ...
+	if (typeof traceLine.packageName !== 'undefined' && traceLine.packageName !== 'demo') {
+		// then skip this line
+		return true;
+	}
+
+	// You can console.log(traceLine) to see all of it's properties.
+	// Don't expect all these properties to be present, and don't assume
+	// that our traceLine is an object.
+});
+
+// there is also:
+pe.unskip(fn);
+pe.unskipAll();
+```
+
+#### Modifying each trace line's conents
+```javascript
+pe.filter(function(traceLine, lineNumber){
+
+	// the 'what' clause is something like:
+	// 'DynamicTimeline.module.exports.DynamicTimeline._verifyProp'
+	if (typeof traceLine.what !== 'undefined'){
+
+		// we can shorten it with a regex:
+		traceLine.what = traceLine.what.replace(
+			/(.*\.module\.exports\.)(.*)/, '$2'
+		);
+
+	}
+});
+
+// there is also:
+pe.removeFilter(fn);
+pe.removeAllFilters();
+```
+
+## State of the project
+
+Please note that this is a work in progress.
+
+#### P.S
+
+If you're on windows, you can get better typography by using an alternative console. I use [ConEmu](http://conemu.codeplex.com).

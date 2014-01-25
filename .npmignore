@@ -5,6 +5,8 @@ xeno/**
 node_modules
 scripts/dist
 
+docs
+
 -p
 
 npm-debug.log

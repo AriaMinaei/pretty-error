@@ -22,6 +22,14 @@ module.exports = class PrettyError
 
 		defaultStyle()
 
+	@listen: (cb) ->
+
+		pe = new self
+
+		pe.listen cb
+
+		pe
+
 	constructor: ->
 
 		@_maxItems = 50
@@ -41,6 +49,20 @@ module.exports = class PrettyError
 		@_style = self._getDefaultStyle()
 
 		@_renderer.style @_style
+
+	listen: (cb) ->
+
+		process.on 'uncaughtException', (exc) =>
+
+			@render exc, yes
+
+			process.exit 1
+
+			return
+
+		process.nextTick cb if cb?
+
+		@
 
 	config: (c) ->
 
@@ -244,36 +266,6 @@ module.exports = class PrettyError
 
 		rendered
 
-	_skipOrFilter: (item, itemNumber) ->
-
-		if typeof item is 'object'
-
-			return yes if item.modName in @_packagesToSkip
-
-			return yes if item.path in @_pathsToSkip
-
-			for modName in item.packages
-
-				return yes if modName in @_packagesToSkip
-
-			if typeof item.shortenedAddr is 'string'
-
-				for pair in @_aliases
-
-					item.shortenedAddr = item.shortenedAddr.replace pair.stringOrRx,
-
-						pair.alias
-
-		for cb in @_skipCallbacks
-
-			return yes if cb(item, itemNumber) is yes
-
-		for cb in @_filterCallbacks
-
-			cb(item, itemNumber)
-
-		return no
-
 	getObject: (e) ->
 
 		unless e instanceof ParsedError
@@ -362,6 +354,36 @@ module.exports = class PrettyError
 			obj['pretty-error'].trace = traceItems
 
 		obj
+
+	_skipOrFilter: (item, itemNumber) ->
+
+		if typeof item is 'object'
+
+			return yes if item.modName in @_packagesToSkip
+
+			return yes if item.path in @_pathsToSkip
+
+			for modName in item.packages
+
+				return yes if modName in @_packagesToSkip
+
+			if typeof item.shortenedAddr is 'string'
+
+				for pair in @_aliases
+
+					item.shortenedAddr = item.shortenedAddr.replace pair.stringOrRx,
+
+						pair.alias
+
+		for cb in @_skipCallbacks
+
+			return yes if cb(item, itemNumber) is yes
+
+		for cb in @_filterCallbacks
+
+			cb(item, itemNumber)
+
+		return no
 
 for prop in ['renderer', 'style'] then do ->
 

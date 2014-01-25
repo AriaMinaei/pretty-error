@@ -82,7 +82,7 @@ pe = require('pretty-error').start();
 pe.adppendStyle({
 
 	// this is a simple selector to the element that says 'Error'
-	'pretty-error > header > title > kind':
+	'pretty-error > header > title > kind': {
 
 		// which we can hide:
 		display: 'none'
@@ -103,7 +103,7 @@ pe.adppendStyle({
 		// let's change its color
 		color: 'bright-white',
 
-		// I could use black, red, green, yellow, blue, magenta, cyan, white,
+		// we can use black, red, green, yellow, blue, magenta, cyan, white,
 		// grey, bright-red, bright-green, bright-yellow, bright-blue,
 		// bright-magenta, bright-cyan, and bright-white
 
@@ -250,7 +250,7 @@ pe.unskip(fn);
 pe.unskipAll();
 ```
 
-#### Modifying each trace line's conents
+#### Modifying each trace line's contents
 ```javascript
 pe.filter(function(traceLine, lineNumber){
 
@@ -275,6 +275,11 @@ pe.removeAllFilters();
 
 Please note that this is a work in progress, so there are rough edges. I'll try to add features and fix reported bugs, but feel free to fork this project and make your own changes.
 
-#### P.S
+#### P.S.
 
-If you're on windows, you can get better typography by using an alternative console. I use [ConEmu](http://conemu.codeplex.com).
+* If you're on windows, you can get better typography by using an alternative console. I use [ConEmu](http://conemu.codeplex.com).
+* Also check out [PrettyMonitor](https://github.com/AriaMinaei/pretty-monitor) if you're using [when.js](https://github.com/cujojs/when). It's PrettyError wrapped to report unhandled when.js rejections.
+
+## License
+
+MIT

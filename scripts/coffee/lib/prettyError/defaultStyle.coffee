@@ -3,6 +3,8 @@ module.exports = -> {
 
 		display: 'block'
 
+		marginLeft: '2'
+
 	'pretty-error > header':
 
 		display: 'block'
@@ -62,6 +64,10 @@ module.exports = -> {
 		color: 'bright-yellow'
 
 		marginRight: 1
+
+	'pretty-error > trace > item > header > what':
+
+		color: 'white'
 
 	'pretty-error > trace > item > footer':
 

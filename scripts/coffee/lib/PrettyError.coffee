@@ -260,9 +260,7 @@ module.exports = class PrettyError
 
 		rendered = @_renderer.render(obj)
 
-		if logIt is yes
-
-			console.error rendered
+		console.error rendered if logIt is yes
 
 		rendered
 

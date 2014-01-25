@@ -273,7 +273,7 @@ pe.removeAllFilters();
 
 ## State of the project
 
-Please note that this is a work in progress.
+Please note that this is a work in progress, so there are rough edges. I'll try to add features and fix reported bugs, but feel free to fork this project and make your own changes.
 
 #### P.S
 

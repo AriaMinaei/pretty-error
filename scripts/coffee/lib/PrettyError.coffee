@@ -22,11 +22,11 @@ module.exports = class PrettyError
 
 		defaultStyle()
 
-	@listen: (cb) ->
+	@start: (cb) ->
 
 		pe = new self
 
-		pe.listen cb
+		pe.start cb
 
 		pe
 
@@ -50,7 +50,7 @@ module.exports = class PrettyError
 
 		@_renderer.style @_style
 
-	listen: (cb) ->
+	start: (cb) ->
 
 		process.on 'uncaughtException', (exc) =>
 
@@ -288,7 +288,25 @@ module.exports = class PrettyError
 
 			colon: ':'
 
-			message: e.message
+			message: do ->
+
+				msg = String(e.message).trim()
+
+				return msg unless msg.match(/\n/)
+
+				splitted = msg.split "\n"
+
+				ret = []
+
+				for line, i in splitted
+
+					ret.push line
+
+					if i < splitted.length - 1
+
+						ret.push br: {}
+
+				ret
 
 		traceItems = []
 

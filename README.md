@@ -73,7 +73,7 @@ PrettyError turns error objects into something similar to an html document, and 
 
 PrettyError's default theme is a bunch of simple css-like declarations. [Here](https://github.com/AriaMinaei/pretty-error/blob/master/scripts/coffee/lib/prettyError/defaultStyle.coffee) is the source of the default theme.
 
-Surely, you can change all aspects of this theme. Let's do a minimal theme:
+Surely, you can change all aspects of this theme. Let's do a minimal one:
 ```javascript
 // the start() shortcuts returns an instance of PrettyError ...
 pe = require('pretty-error').start();
@@ -134,8 +134,9 @@ pe.adppendStyle({
 		// to cyan, the character will be a hyphen with a space character
 		// on each side:
 		// example: '<bg-white><cyan> - </cyan></bg-white>'
-		// (Note that we should use a margin of 3, since the bullet will be
-		// 3characters long.)
+		//
+		// Note that we should use a margin of 3, since the bullet will be
+		// 3 characters long.
 
 	},
 
@@ -207,6 +208,7 @@ pe.skipPackage('chai', 'when', 'socket.io');
 
 // to unskip:
 pe.unskipPackage('socket.io');
+pe.unskipAllPackages();
 ```
 
 #### Skipping node files
@@ -216,7 +218,6 @@ pe.skipNodeFiles();
 
 // also:
 pe.unskipNodeFiles();
-pe.unskipAllPackages();
 ```
 
 #### Skipping paths
@@ -242,7 +243,7 @@ pe.skip(function(traceLine, lineNumber){
 
 	// You can console.log(traceLine) to see all of it's properties.
 	// Don't expect all these properties to be present, and don't assume
-	// that our traceLine is an object.
+	// that our traceLine is always an object.
 });
 
 // there is also:

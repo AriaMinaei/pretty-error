@@ -92,7 +92,7 @@ pe.adppendStyle({
 	// the 'colon' after 'Error':
 	'pretty-error > header > colon': {
 
-		// we hide that too
+		// we hide that too:
 		display: 'none'
 
 	},
@@ -100,7 +100,7 @@ pe.adppendStyle({
 	// our error message
 	'pretty-error > header > message': {
 
-		// let's change its color
+		// let's change its color:
 		color: 'bright-white',
 
 		// we can use black, red, green, yellow, blue, magenta, cyan, white,
@@ -130,10 +130,10 @@ pe.adppendStyle({
 		//
 		// You can set its color/background color using tags.
 		//
-		// This example set the background color to white, and the text color
+		// This example sets the background color to white, and the text color
 		// to cyan, the character will be a hyphen with a space character
 		// on each side:
-		// example: '<bg-white><cyan> - </cyan></bg-white>'
+		// example: '"<bg-white><cyan> - </cyan></bg-white>"'
 		//
 		// Note that we should use a margin of 3, since the bullet will be
 		// 3 characters long.
@@ -178,7 +178,7 @@ I'll post more examples on [RenderKid](https://github.com/AriaMinaei/renderkid) 
 
 ## Customization
 
-There are a few methods to help you customize the contents of your error logs:
+There are a few methods to help you customize the contents of your error logs.
 
 Let's instantiate first:
 ```javascript

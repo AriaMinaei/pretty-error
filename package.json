@@ -5,7 +5,7 @@
   "main": "scripts/js/lib/PrettyError.js",
   "dependencies": {
     "utila": "~0.3",
-    "renderkid": "~0.2.0-beta.6"
+    "renderkid": "~0.2.0-beta.7"
     },
   "devDependencies": {
     "coffee-script": "~1.6.3",

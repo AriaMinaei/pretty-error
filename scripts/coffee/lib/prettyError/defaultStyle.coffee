@@ -17,7 +17,7 @@ module.exports = -> {
 
 	'pretty-error > header > title > wrapper':
 
-		margin: '0 1'
+		marginRight: '1'
 
 		color: 'grey'
 

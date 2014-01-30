@@ -1,6 +1,7 @@
-(I finally got to test this on linux and it looks like there are a few bugs I have to fix. I'm working on it now, and hopefully, I'll remove this note very soon.)
-
 # PrettyError
+[![Build Status](https://secure.travis-ci.org/AriaMinaei/pretty-error.png)](http://travis-ci.org/AriaMinaei/pretty-error)
+
+Stylish console.log for node
 
 A small tool to render node.js errors with less clutter, like this:
 

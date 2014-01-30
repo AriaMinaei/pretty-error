@@ -68,15 +68,15 @@ it "should work", ->
 
 	e = error -> "a".should.equal "b"
 
-	p.render e, yes
+	console.log p.render e, no
 
 	e2 = error -> Array.split(Object)
 
-	p.render e2, yes
+	console.log p.render e2, no
 
 	e3 = "Plain error message"
 
-	p.render e3, yes
+	console.log p.render e3, no
 
 	e4 =
 
@@ -84,7 +84,7 @@ it "should work", ->
 
 		kind: "Custom Error"
 
-	p.render e4, yes
+	console.log p.render e4, no
 
 	e5 =
 
@@ -94,4 +94,4 @@ it "should work", ->
 
 		wrapper: 'UnhandledRejection'
 
-	p.render e5, yes
+	console.log p.render e5, no

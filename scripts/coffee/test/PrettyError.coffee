@@ -95,3 +95,7 @@ it "should work", ->
 		wrapper: 'UnhandledRejection'
 
 	console.log p.render e5, no
+
+	e6 = error -> PrettyError.someNonExistingFuncion()
+
+	console.log p.render e6, no

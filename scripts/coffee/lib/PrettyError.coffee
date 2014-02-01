@@ -288,25 +288,7 @@ module.exports = class PrettyError
 
 			colon: ':'
 
-			message: do ->
-
-				msg = String(e.message).trim()
-
-				return msg unless msg.match(/\n/)
-
-				splitted = msg.split "\n"
-
-				ret = []
-
-				for line, i in splitted
-
-					ret.push line
-
-					if i < splitted.length - 1
-
-						ret.push br: {}
-
-				ret
+			message: String(e.message).trim()
 
 		traceItems = []
 

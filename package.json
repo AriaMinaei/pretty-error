@@ -1,11 +1,11 @@
 {
   "name": "pretty-error",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "Readable errors for node",
   "main": "scripts/js/lib/PrettyError.js",
   "dependencies": {
     "utila": "~0.3",
-    "renderkid": "~0.2.0-beta.7"
+    "renderkid": "~0.2.0-beta.10"
     },
   "devDependencies": {
     "coffee-script": "~1.6.3",

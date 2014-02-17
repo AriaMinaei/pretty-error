@@ -42,6 +42,8 @@ module.exports = class PrettyError
 
 		@_filterCallbacks = []
 
+		@_parsedErrorFilters = []
+
 		@_aliases = []
 
 		@_renderer = new RenderKid
@@ -116,7 +118,17 @@ module.exports = class PrettyError
 
 			else
 
-				@filters.apply @, c.filters
+				@filter.apply @, c.filters
+
+		if c.parsedErrorFilters?
+
+			if c.parsedErrorFilters is no
+
+				@removeAllParsedErrorFilters()
+
+			else
+
+				@filterParsedError.apply @, c.parsedErrorFilters
 
 		if c.aliases?
 
@@ -210,9 +222,27 @@ module.exports = class PrettyError
 
 		@
 
+	filterParsedError: (callbacks...) ->
+
+		@_parsedErrorFilters.push cb for cb in callbacks
+
+		@
+
+	removeParsedErrorFilter: (callbacks...) ->
+
+		array.pluckOneItem(@_parsedErrorFilters, cb) for cb in callbacks
+
+		@
+
+	removeAllParsedErrorFilters: ->
+
+		@_parsedErrorFilters.length = 0
+
+		@
+
 	setMaxItems: (maxItems = 50) ->
 
-		if maxItems is 0 then maxItems = 1000
+		if maxItems is 0 then maxItems = 50
 
 		@_maxItems = maxItems|0
 
@@ -269,6 +299,8 @@ module.exports = class PrettyError
 		unless e instanceof ParsedError
 
 			e = new ParsedError e
+
+		@_applyParsedErrorFiltersOn e
 
 		header =
 
@@ -382,6 +414,14 @@ module.exports = class PrettyError
 			cb(item, itemNumber)
 
 		return no
+
+	_applyParsedErrorFiltersOn: (error) ->
+
+		for cb in @_parsedErrorFilters
+
+			cb error
+
+		return
 
 for prop in ['renderer', 'style'] then do ->
 

@@ -1,6 +1,6 @@
 {
   "name": "pretty-error",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "Readable errors for node",
   "main": "scripts/js/lib/PrettyError.js",
   "dependencies": {
@@ -23,5 +23,8 @@
   },
   "bugs": {
     "url": "https://github.com/AriaMinaei/pretty-error/issues"
-  }
+  },
+  "keywords": [
+    "pretty", "error", "exception", "debug", "error-handling", "readable", "colorful", "prettify", "format", "human"
+  ]
 }

@@ -1,7 +1,7 @@
 # PrettyError
 [![Build Status](https://secure.travis-ci.org/AriaMinaei/pretty-error.png)](http://travis-ci.org/AriaMinaei/pretty-error)
 
-A small tool to render node.js errors with less clutter, like this:
+A small tool to see node.js errors with less clutter:
 
 ![screenshot of PrettyError](https://github.com/AriaMinaei/pretty-error/raw/master/docs/images/pretty-error-screenshot.png)
 
@@ -15,60 +15,73 @@ Install with npm:
 
 	npm install pretty-error
 
-## Usage
+## Usage and Examples
 
-To see all errors rendered with colors, there is a shortcut for it:
+To see an error rendered with colors, you can do this:
+```javascript
+var PrettyError = require('pretty-error');
+
+var pe = new PrettyError();
+
+var renderedError = pe.render(new Error('Some error message'));
+
+console.log(renderedError);
+```
+
+Of course, you can render caught exceptions too:
+```javascript
+try {
+
+   doSomethingThatThrowsAnError();
+
+} catch (error) {
+
+   console.log(pe.render(error));
+
+}
+```
+
+But if you wanna see all node errors with colors, there is a shortcut for it:
 ```javascript
 require('pretty-error').start(function(){
-	startTheApp();
+   startTheApp();
 });
 ```
 
 ... which is essentially equal to:
 ```javascript
-PrettyError = require('pretty-error');
+var PrettyError = require('pretty-error');
 
 // instantiate PrettyError, which can then be used to
 // render error objects
-pe = new PrettyError();
+var pe = new PrettyError();
 
 // catch uncaught exceptions in node.js
 process.on('uncaughtException', function(error){
 
-	// this would render the caught error into a string...
-	var rendered = pe.render(error);
+   // this would render the caught error into a string...
+   var rendered = pe.render(error);
 
-	// ... which we can then use to log to the console
-	console.error(rendered);
+   // ... which we can then use to log to the console
+   console.error(rendered);
 
-	// we should then exit the program, as advised in node's documentation:
-	// http://nodejs.org/docs/v0.10.0/api/process.html#process_event_uncaughtexception
-	process.exit(1);
+   // we should then exit the program, as advised in node's documentation:
+   // http://nodejs.org/docs/v0.10.0/api/process.html#process_event_uncaughtexception
+   process.exit(1);
+
 });
 
 // 'uncaughtException' will start listening on the next tick,
 // so we must postpone everything that might generate errors
 // to the next tick:
 process.nextTick(function(){
-	startTheApp();
+   startTheApp();
 });
-
-// and of course, you can use it to render handled exceptions too:
-try {
-
-	aNonExistingFunction(); // this will throw an error
-
-} catch (error) {
-
-	// and we can render it out, just like unhandled errors
-	console.log(pe.render(error));
-
-}
 ```
 
 ## How it Works
 
-PrettyError turns error objects into something similar to an html document, and then uses the upcoming [RenderKid](https://github.com/AriaMinaei/renderkid) to render the document using simple html/css-like commands for the console. This allows PrettyError to be themed using simple css-like declarations.
+PrettyError turns error objects into something similar to an html document, and then uses the upcoming [RenderKid](https://github.com/AriaMinaei/renderkid) to render the document using simple html/css-like commands. This allows PrettyError to be themed using simple css-like declarations.
 
 ## Theming
 
@@ -82,92 +95,92 @@ pe = require('pretty-error').start();
 // ... which we can then use to customize with css declarations:
 pe.adppendStyle({
 
-	// this is a simple selector to the element that says 'Error'
-	'pretty-error > header > title > kind': {
+   // this is a simple selector to the element that says 'Error'
+   'pretty-error > header > title > kind': {
 
-		// which we can hide:
-		display: 'none'
+      // which we can hide:
+      display: 'none'
 
-	},
+   },
 
-	// the 'colon' after 'Error':
-	'pretty-error > header > colon': {
+   // the 'colon' after 'Error':
+   'pretty-error > header > colon': {
 
-		// we hide that too:
-		display: 'none'
+      // we hide that too:
+      display: 'none'
 
-	},
+   },
 
-	// our error message
-	'pretty-error > header > message': {
+   // our error message
+   'pretty-error > header > message': {
 
-		// let's change its color:
-		color: 'bright-white',
+      // let's change its color:
+      color: 'bright-white',
 
-		// we can use black, red, green, yellow, blue, magenta, cyan, white,
-		// grey, bright-red, bright-green, bright-yellow, bright-blue,
-		// bright-magenta, bright-cyan, and bright-white
+      // we can use black, red, green, yellow, blue, magenta, cyan, white,
+      // grey, bright-red, bright-green, bright-yellow, bright-blue,
+      // bright-magenta, bright-cyan, and bright-white
 
-		// we can also change the background color:
-		background: 'cyan',
+      // we can also change the background color:
+      background: 'cyan',
 
-		// it understands paddings too!
-		padding: '0 1' // top/bottom left/right
+      // it understands paddings too!
+      padding: '0 1' // top/bottom left/right
 
-	},
+   },
 
-	// each trace item ...
-	'pretty-error > trace > item': {
+   // each trace item ...
+   'pretty-error > trace > item': {
 
-		// ... can have a margin ...
-		marginLeft: 2,
+      // ... can have a margin ...
+      marginLeft: 2,
 
-		// ... and a bullet character!
-		bullet: '"<grey>o</grey>"'
+      // ... and a bullet character!
+      bullet: '"<grey>o</grey>"'
 
-		// Notes on bullets:
-		//
-		// The string inside the quotation mark will be used for bullets.
-		//
-		// You can set its color/background color using tags.
-		//
-		// This example sets the background color to white, and the text color
-		// to cyan, the character will be a hyphen with a space character
-		// on each side:
-		// example: '"<bg-white><cyan> - </cyan></bg-white>"'
-		//
-		// Note that we should use a margin of 3, since the bullet will be
-		// 3 characters long.
+      // Notes on bullets:
+      //
+      // The string inside the quotation mark will be used for bullets.
+      //
+      // You can set its color/background color using tags.
+      //
+      // This example sets the background color to white, and the text color
+      // to cyan, the character will be a hyphen with a space character
+      // on each side:
+      // example: '"<bg-white><cyan> - </cyan></bg-white>"'
+      //
+      // Note that we should use a margin of 3, since the bullet will be
+      // 3 characters long.
 
-	},
+   },
 
-	'pretty-error > trace > item > header > pointer > file': {
+   'pretty-error > trace > item > header > pointer > file': {
 
-		color: 'bright-cyan'
+      color: 'bright-cyan'
 
-	},
+   },
 
-	'pretty-error > trace > item > header > pointer > colon': {
+   'pretty-error > trace > item > header > pointer > colon': {
 
-		color: 'cyan'
+      color: 'cyan'
 
-	},
+   },
 
-	'pretty-error > trace > item > header > pointer > line': {
+   'pretty-error > trace > item > header > pointer > line': {
 
-		color: 'bright-cyan'
+      color: 'bright-cyan'
 
-	},
+   },
 
-	'pretty-error > trace > item > header > what': {
+   'pretty-error > trace > item > header > what': {
 
-		color: 'bright-white'
+      color: 'bright-white'
 
-	},
+   },
 
-	'pretty-error > trace > item > footer > addr': {
+   'pretty-error > trace > item > footer > addr': {
 
-		display: 'none'
+      display: 'none'
 
 });
 ```
@@ -235,16 +248,16 @@ You can customize which trace lines get logged and which won't:
 ```javascript
 pe.skip(function(traceLine, lineNumber){
 
-	// if we know which package this trace line comes from, and it isn't
-	// our 'demo' package ...
-	if (typeof traceLine.packageName !== 'undefined' && traceLine.packageName !== 'demo') {
-		// then skip this line
-		return true;
-	}
+   // if we know which package this trace line comes from, and it isn't
+   // our 'demo' package ...
+   if (typeof traceLine.packageName !== 'undefined' && traceLine.packageName !== 'demo') {
+      // then skip this line
+      return true;
+   }
 
-	// You can console.log(traceLine) to see all of it's properties.
-	// Don't expect all these properties to be present, and don't assume
-	// that our traceLine is always an object.
+   // You can console.log(traceLine) to see all of it's properties.
+   // Don't expect all these properties to be present, and don't assume
+   // that our traceLine is always an object.
 });
 
 // there is also:
@@ -256,16 +269,16 @@ pe.unskipAll();
 ```javascript
 pe.filter(function(traceLine, lineNumber){
 
-	// the 'what' clause is something like:
-	// 'DynamicTimeline.module.exports.DynamicTimeline._verifyProp'
-	if (typeof traceLine.what !== 'undefined'){
+   // the 'what' clause is something like:
+   // 'DynamicTimeline.module.exports.DynamicTimeline._verifyProp'
+   if (typeof traceLine.what !== 'undefined'){
 
-		// we can shorten it with a regex:
-		traceLine.what = traceLine.what.replace(
-			/(.*\.module\.exports\.)(.*)/, '$2'
-		);
+      // we can shorten it with a regex:
+      traceLine.what = traceLine.what.replace(
+         /(.*\.module\.exports\.)(.*)/, '$2'
+      );
 
-	}
+   }
 });
 
 // there is also:
@@ -273,9 +286,56 @@ pe.removeFilter(fn);
 pe.removeAllFilters();
 ```
 
+## Integrating with frameworks
+
+PrettyError is very simple to set up, so it should be easy to use within other frameworks.
+
+### Integrating with [express](https://github.com/visionmedia/express)
+
+Most frameworks such as express, catch errors automatically and provide a mechanism to handle those errors. Here is an example of how you can use PrettyError to log unhandled errors in express:
+
+```javascript
+// this is app.js
+
+var express = require('express');
+var PrettyError = require('pretty-error');
+
+var app = express();
+
+app.get('/', function(req, res) {
+
+   // this will throw an error:
+   var a = b;
+
+});
+
+var server = app.listen(3000, function(){
+
+   console.log('Server started \n');
+
+});
+
+
+// we can now instantiaite Prettyerror:
+pe = new PrettyError();
+
+// and use it for our app's error handler:
+app.use(function(err, req, res, next){
+
+   console.log(pe.render(err));
+
+});
+
+// we can optionally configure prettyError to simplify the stack trace:
+
+pe.skipNodeFiles(); // this will skip events.js and http.js and similar core node files
+
+pe.skipPackage('express'); // this will skip all the trace lines about express` core and sub-modules
+```
+
 ## State of the project
 
-Please note that this is a work in progress, so there are rough edges. I'll try to add features and fix reported bugs, but feel free to fork this project and make your own changes.
+This project has been out there for a while and used by fellow devs, but I still consider it a work in progress. Please let me know if something isn't working, or if you have any suggestions. And pull requests are of course, very welcome!
 
 #### P.S.
 

@@ -54,13 +54,15 @@ module.exports = class PrettyError
 
 	start: (cb) ->
 
-		process.on 'uncaughtException', (exc) =>
+		oldPrepareStackTrace = Error.prepareStackTrace
 
-			@render exc, yes
+		# https://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
 
-			process.exit 1
+		Error.prepareStackTrace = (exc, trace) =>
 
-			return
+			stack = oldPrepareStackTrace.apply null, arguments
+
+			@render {stack, message: exc.toString().replace /^.*: /, ''}, no
 
 		process.nextTick cb if cb?
 

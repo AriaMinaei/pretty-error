@@ -1,5 +1,9 @@
 require './_prepare'
 
+isFormatted = (exc) ->
+
+	exc.stack.indexOf('  \u001b[0m\u001b[97m\u001b[41m') is 0
+
 error = (what) ->
 
 	if typeof what is 'string'
@@ -99,3 +103,28 @@ it "should work", ->
 	e6 = error -> PrettyError.someNonExistingFuncion()
 
 	console.log p.render e6, no
+
+describe "start()"
+
+it "throws unformatted error when not started", ->
+
+	try
+
+		throw new Error "foo bar"
+
+	catch exc
+
+	expect(isFormatted exc).to.be.false
+
+it "throws formatted the error", ->
+
+	PrettyError.start()
+
+	try
+
+		throw new Error "foo bar"
+
+	catch exc
+
+	expect(isFormatted exc).to.be.true
+

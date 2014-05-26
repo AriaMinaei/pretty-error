@@ -12,8 +12,9 @@
     "renderkid": "~0.2.0-beta.10"
   },
   "devDependencies": {
-    "coffee-script": "~1.6.3",
-    "little-popo": "~0.1.4"
+    "coffee-script": "~1.7.1",
+    "chai": "~1.9.1",
+    "mocha": "~1.19.0"
   },
   "author": "Aria Minaei",
   "license": "MIT",
@@ -25,6 +26,15 @@
     "url": "https://github.com/AriaMinaei/pretty-error/issues"
   },
   "keywords": [
-    "pretty", "error", "exception", "debug", "error-handling", "readable", "colorful", "prettify", "format", "human"
+    "pretty",
+    "error",
+    "exception",
+    "debug",
+    "error-handling",
+    "readable",
+    "colorful",
+    "prettify",
+    "format",
+    "human"
   ]
 }

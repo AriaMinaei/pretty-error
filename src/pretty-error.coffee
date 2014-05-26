@@ -4,6 +4,8 @@ ParsedError = require './parsed-error'
 nodePaths = require './node-paths'
 RenderKid = require 'renderkid'
 
+instance = null
+
 module.exports = class PrettyError
 	self = @
 
@@ -16,10 +18,15 @@ module.exports = class PrettyError
 	@_getDefaultStyle: ->
 		defaultStyle()
 
-	@start: (cb) ->
-		pe = new self
-		pe.start cb
-		pe
+	@start: ->
+		unless instance?
+			instance = new self
+			instance.start()
+
+		instance
+
+	@stop: ->
+		instance?.stop()
 
 	constructor: ->
 		@_maxItems = 50
@@ -33,17 +40,20 @@ module.exports = class PrettyError
 		@_style = self._getDefaultStyle()
 		@_renderer.style @_style
 
-	start: (cb) ->
-		oldPrepareStackTrace = Error.prepareStackTrace
+	start: ->
+		@_oldPrepareStackTrace = Error.prepareStackTrace
 
 		# https://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
 
 		Error.prepareStackTrace = (exc, trace) =>
-			stack = oldPrepareStackTrace.apply null, arguments
+			stack = @_oldPrepareStackTrace.apply null, arguments
 			@render {stack, message: exc.toString().replace /^.*: /, ''}, no
 
-		process.nextTick cb if cb?
 		@
+
+	stop: ->
+		Error.prepareStackTrace = @_oldPrepareStackTrace
+		@_oldPrepareStackTrace = null
 
 	config: (c) ->
 		if c.skipPackages?

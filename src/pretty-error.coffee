@@ -1,7 +1,7 @@
 {object, array} = require 'utila'
-defaultStyle = require './prettyError/defaultStyle'
-ParsedError = require './ParsedError'
-nodePaths = require './nodePaths'
+defaultStyle = require './default-style'
+ParsedError = require './parsed-error'
+nodePaths = require './node-paths'
 RenderKid = require 'renderkid'
 
 module.exports = class PrettyError

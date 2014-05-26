@@ -24,7 +24,7 @@ error = (what) ->
 
 		throw Error "bad argument for error"
 
-ParsedError = mod 'ParsedError'
+ParsedError = mod 'parsed-error'
 
 describe "constructor()"
 

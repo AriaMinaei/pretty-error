@@ -2,18 +2,18 @@
   "name": "pretty-error",
   "version": "0.1.18",
   "description": "See nodejs errors with less clutter",
-  "main": "scripts/js/lib/PrettyError.js",
+  "main": "./lib/pretty-error.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha test/*.coffee",
+    "pretest": "./node_modules/.bin/coffee --bare --compile --output ./lib ./src/*.coffee"
+  },
   "dependencies": {
     "utila": "~0.3",
     "renderkid": "~0.2.0-beta.10"
-    },
+  },
   "devDependencies": {
     "coffee-script": "~1.6.3",
     "little-popo": "~0.1.4"
-  },
-  "scripts": {
-    "test": "node ./node_modules/coffee-script/bin/cake test",
-    "prepublish": "node ./node_modules/coffee-script/bin/cake build"
   },
   "author": "Aria Minaei",
   "license": "MIT",

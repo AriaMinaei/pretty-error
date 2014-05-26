@@ -22,7 +22,7 @@ error = (what) ->
 
 	throw Error "bad argument for error"
 
-PrettyError = mod 'PrettyError'
+PrettyError = mod 'pretty-error'
 
 describe "constructor()"
 
@@ -44,7 +44,7 @@ it "should, by default, return the contents in prettyError/defaultStyle", ->
 
 	p = new PrettyError
 
-	defaultStyle = mod 'prettyError/defaultStyle'
+	defaultStyle = mod 'default-style'
 
 	p.style.should.be.like defaultStyle()
 

@@ -1,6 +1,6 @@
 {
   "name": "pretty-error",
-  "version": "0.1.18",
+  "version": "1.0.0",
   "description": "See nodejs errors with less clutter",
   "main": "./lib/pretty-error.js",
   "scripts": {

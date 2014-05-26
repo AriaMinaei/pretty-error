@@ -9,21 +9,13 @@ module.exports = class ParsedError
 		@_kind = 'Error'
 		@_wrapper = ''
 
-		if @error.wrapper?
-			@_wrapper = String @error.wrapper
+		@_wrapper = String @error.wrapper if @error.wrapper?
 
 		unless typeof @error is 'object'
 			@_message = String @error
 		else
-			if @error.message?
-				@_message = String @error.message
-			else
-				@_message = ''
-
-			if @error.stack?
-				@_stack = @error.stack
-			else
-				@_stack = null
+			@_message = @error.message? and String(@error.message) or ''
+			@_stack = @error.stack? and @error.stack or null
 
 			if @error.kind?
 				@_kind = String @error.kind
@@ -78,33 +70,33 @@ module.exports = class ParsedError
 		original = text
 
 		# the part that comes before the address
-		what   = null
+		what = null
 
 		# address, including path to module and line/col
-		addr   = null
+		addr = null
 
 		# path to module
-		path   = null
+		path = null
 
 		# module dir
-		dir    = null
+		dir = null
 
 		# module basename
-		file   = null
+		file = null
 
 		# line number (if using a compiler, the line number of the module
 		# in that compiler will be used)
-		line   = null
+		line = null
 
 		# column, same as above
-		col 	 = null
+		col = null
 
 		# if using a compiler, this will translate to the line number of
 		# the js equivalent of that module
 		jsLine = null
 
 		# like above
-		jsCol  = null
+		jsCol = null
 
 		# path that doesn't include `node_module` dirs
 		shortenedPath = null

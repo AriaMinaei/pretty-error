@@ -71,6 +71,15 @@ describe "PrettyError", ->
 			console.log p.render e6, no
 
 	describe "start()", ->
+		prepareStackTrace = null
+
+		beforeEach ->
+			{prepareStackTrace} = Error
+			Error.prepareStackTrace = null
+
+		afterEach ->
+			Error.prepareStackTrace = prepareStackTrace
+
 		it "throws unformatted error when not started", ->
 			try
 				throw new Error "foo bar"
@@ -80,10 +89,12 @@ describe "PrettyError", ->
 
 		it "throws formatted the error", ->
 			PrettyError.start()
+
 			try
 				throw new Error "foo bar"
 			catch exc
 
 			isFormatted(exc).should.be.eql true
-			PrettyError.stop()
+			exc.stack.split(/\n/g).length.should.be.above 2
 
+			PrettyError.stop()

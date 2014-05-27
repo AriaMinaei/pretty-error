@@ -43,10 +43,14 @@ module.exports = class PrettyError
 	start: ->
 		@_oldPrepareStackTrace = Error.prepareStackTrace
 
-		# https://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
+		prepeare = @_oldPrepareStackTrace or (exc, frames) ->
+			result = exc.toString()
+			frames = frames.map (frame) -> "  at #{frame.toString()}"
+			result + "\n" + frames.join "\n"
 
+		# https://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
 		Error.prepareStackTrace = (exc, trace) =>
-			stack = @_oldPrepareStackTrace.apply null, arguments
+			stack = prepeare.apply(null, arguments)
 			@render {stack, message: exc.toString().replace /^.*: /, ''}, no
 
 		@

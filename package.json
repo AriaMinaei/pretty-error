@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "utila": "~0.3",
-    "renderkid": "~0.2.0-beta.10"
+    "renderkid": ">=0.2.0-beta.10 <0.2.0-rc"
   },
   "devDependencies": {
     "coffee-script": "~1.7.1",

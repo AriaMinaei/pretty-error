@@ -8,13 +8,13 @@
     "pretest": "./node_modules/.bin/coffee --bare --compile --output ./lib ./src/*.coffee"
   },
   "dependencies": {
-    "utila": "~0.3",
+    "utila": "~0.4",
     "renderkid": "~0.2.0-beta.10"
   },
   "devDependencies": {
-    "coffee-script": "~1.7.1",
-    "chai": "~1.9.1",
-    "mocha": "~1.19.0"
+    "coffee-script": "~1.8.0",
+    "chai": "~1.9.2",
+    "mocha": "~2.0.1"
   },
   "author": "Aria Minaei",
   "license": "MIT",

@@ -73,7 +73,7 @@ Surely, you can change all aspects of this theme. Let's do a minimal one:
 pe = require('pretty-error').start();
 
 // ... which we can then use to customize with css declarations:
-pe.adppendStyle({
+pe.appendStyle({
    // this is a simple selector to the element that says 'Error'
    'pretty-error > header > title > kind': {
       // which we can hide:

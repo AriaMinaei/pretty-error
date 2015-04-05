@@ -4,17 +4,26 @@
   "description": "See nodejs errors with less clutter",
   "main": "./lib/pretty-error.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha test/*.coffee",
-    "pretest": "./node_modules/.bin/coffee --bare --compile --output ./lib ./src/*.coffee"
+    "test": "mocha \"test/**/*.coffee\"",
+    "test:watch": "mocha \"test/**/*.coffee\" --watch",
+
+    "compile": "coffee --bare --compile --output ./lib ./src",
+    "compile:watch": "jitter src lib -b",
+
+    "watch": "npm run compile:watch & npm run test:watch",
+    "winwatch": "start/b npm run compile:watch & npm run test:watch",
+
+    "prepublish": "npm run compile"
   },
   "dependencies": {
     "utila": "~0.4",
-    "renderkid": "~0.2.0-beta.10"
+    "renderkid": "~0.2.0"
   },
   "devDependencies": {
     "coffee-script": "~1.8.0",
     "chai": "~1.9.2",
-    "mocha": "~2.0.1"
+    "mocha": "~2.0.1",
+    "jitter": "^1.3.0"
   },
   "author": "Aria Minaei",
   "license": "MIT",

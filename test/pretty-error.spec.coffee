@@ -1,6 +1,6 @@
 chai = require 'chai'
-PrettyError = require '../lib/pretty-error'
-defaultStyle = require '../lib/default-style'
+PrettyError = require '../src/pretty-error'
+defaultStyle = require '../src/default-style'
 
 chai.should();
 

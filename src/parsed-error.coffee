@@ -222,4 +222,6 @@ module.exports = class ParsedError
 
 for prop in ['message', 'kind', 'arguments', 'type', 'stack', 'trace', 'wrapper'] then do ->
 	methodName = '_get' + prop[0].toUpperCase() + prop.substr(1, prop.length)
-	ParsedError::__defineGetter__ prop, -> do @[methodName]
+
+	Object.defineProperty ParsedError::, prop,
+		get: -> this[methodName]()

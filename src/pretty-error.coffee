@@ -29,6 +29,7 @@ module.exports = class PrettyError
 		instance?.stop()
 
 	constructor: ->
+		@_useColors = yes
 		@_maxItems = 50
 		@_packagesToSkip = []
 		@_pathsToSkip = []
@@ -104,6 +105,14 @@ module.exports = class PrettyError
 			else if c.aliases is no
 				@removeAllAliases()
 
+		@
+
+	withoutColors: ->
+		@_useColors = false
+		@
+
+	withColors: ->
+		@_useColors = true
 		@
 
 	skipPackage: (packages...) ->
@@ -202,9 +211,9 @@ module.exports = class PrettyError
 	_getRenderer: ->
 		@_renderer
 
-	render: (e, logIt = no) ->
+	render: (e, logIt = no, useColors = @_useColors) ->
 		obj = @getObject e
-		rendered = @_renderer.render(obj)
+		rendered = @_renderer.render(obj, useColors)
 		console.error rendered if logIt is yes
 		rendered
 

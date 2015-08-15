@@ -70,6 +70,15 @@ describe "PrettyError", ->
 			e6 = error -> PrettyError.someNonExistingFuncion()
 			console.log p.render e6, no
 
+		it.skip "should render without colors if pe._useColors is false", ->
+			p = new PrettyError
+			p.withoutColors()
+			p.skipNodeFiles()
+			p.appendStyle 'pretty-error': marginLeft: 4
+
+			e = error -> "a".should.equal "b"
+			console.log p.render e, no
+
 	describe "start()", ->
 		prepareStackTrace = null
 

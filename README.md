@@ -253,6 +253,11 @@ pe.removeFilter(fn);
 pe.removeAllFilters();
 ```
 
+## Disabling colors
+```javascript
+pe.withoutColors(); // Errors will be rendered without coloring
+```
+
 ## Integrating with frameworks
 
 PrettyError is very simple to set up, so it should be easy to use within other frameworks.

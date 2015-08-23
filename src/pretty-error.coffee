@@ -254,21 +254,24 @@ module.exports = class PrettyError
 				traceItems.push item: custom: item
 				continue
 
-			traceItems.push item:
-				header:
-					pointer: do ->
-						return '' unless item.file?
+			traceItems.push do ->
+				markupItem = item:
+					header:
+						pointer: do ->
+							return '' unless item.file?
 
-						file: item.file
-						colon: ':'
-						line: item.line
+							file: item.file
+							colon: ':'
+							line: item.line
 
-					what: item.what
+					footer: do ->
+						foooter = addr: item.shortenedAddr
+						if item.extra? then foooter.extra = item.extra
+						foooter
 
-				footer: do ->
-					foooter = addr: item.shortenedAddr
-					if item.extra? then foooter.extra = item.extra
-					foooter
+				markupItem.item.header.what = item.what if typeof item.what is 'string' and item.what.trim().length > 0
+				markupItem
+
 
 		obj = 'pretty-error':
 			header: header

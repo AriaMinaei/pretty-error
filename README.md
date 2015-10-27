@@ -42,7 +42,7 @@ try {
 }
 ```
 
-But if you wanna see all node errors with colors, there is a shortcut for it:
+But if you want to see all node errors with colors, there is a shortcut for it:
 
 ```javascript
 require('pretty-error').start();
@@ -298,9 +298,44 @@ pe.skipNodeFiles(); // this will skip events.js and http.js and similar core nod
 pe.skipPackage('express'); // this will skip all the trace lines about express` core and sub-modules
 ```
 
-## State of the project
+## Troubleshooting
 
-This project has been out there for a while and used by fellow devs, but I still consider it a work in progress. Please let me know if something isn't working, or if you have any suggestions. And pull requests are of course, very welcome!
+`PrettyError.start()` modifies the stack traces of all errors thrown anywhere in your code, so it could potentially break packages that rely on node's original stack traces. I've only encountered this problem once, and it was with BlueBird when `Promise.longStackTraces()` was on.
+
+In order to avoid this problem, it's better to not use `PrettyError.start()` and instead, manually catch errors and render them with PrettyError:
+
+```javascript
+var PrettyError = require('pretty-error');
+var pe = new PrettyError();
+
+// To render exceptions thrown in non-promies code:
+process.on('uncaughtException', function(error){
+   console.log(pe.render(error));
+});
+
+// To render unhandled rejections created in BlueBird:
+process.on('unhandledRejection', function(reason){
+   console.log("Unhandled rejection");
+   console.log(pe.render(reason));
+});
+
+// While PrettyError.start() works out of the box with when.js` unhandled rejections,
+// now that wer'e manually rendering errors, we have to instead use npmjs.org/packages/pretty-monitor
+// to handle when.js rejections.
+
+```
+
+The only drawback with this approach is that exceptions thrown in the first tick are not prettified. To fix that, you can delay your application's startup for one tick:
+
+```javascript
+// (continued form above)
+
+throw new Error(); // not prettified
+process.nextTick(function(){
+   throw new Error(); // prettified
+});
+
+```
 
 #### P.S.
 

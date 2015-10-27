@@ -290,6 +290,7 @@ pe = new PrettyError();
 // and use it for our app's error handler:
 app.use(function(err, req, res, next){
    console.log(pe.render(err));
+   next();
 });
 
 // we can optionally configure prettyError to simplify the stack trace:

@@ -2,7 +2,7 @@
   "name": "pretty-error",
   "version": "1.2.0",
   "description": "See nodejs errors with less clutter",
-  "main": "./lib/pretty-error.js",
+  "main": "./lib/PrettyError.js",
   "scripts": {
     "test": "mocha \"test/**/*.coffee\"",
     "test:watch": "mocha \"test/**/*.coffee\" --watch",

@@ -2,10 +2,10 @@ sysPath = require 'path'
 
 module.exports = class ParsedError
   constructor: (@error) ->
-    @_trace = []
     do @_parse
 
   _parse: ->
+    @_trace = []
     @_kind = 'Error'
     @_wrapper = ''
 
@@ -14,8 +14,7 @@ module.exports = class ParsedError
     unless typeof @error is 'object'
       @_message = String @error
     else
-      @_message = @error.message? and String(@error.message) or ''
-      @_stack = @error.stack? and @error.stack or null
+      @_stack = @error.stack
 
       if @error.kind?
         @_kind = String @error.kind
@@ -23,36 +22,36 @@ module.exports = class ParsedError
         if m = @_stack.match /^([a-zA-Z0-9\_\$]+):\ /
           @_kind = m[1]
 
-      do @_parseTrace
+      if typeof @_stack is 'string'
+        @_parseStack()
+      else
+        @_message = @error.message? and String(@error.message) or ''
 
     return
 
-  _parseTrace: ->
-    if typeof @_stack is 'string'
-      @_parseTextAsStack @_stack
-    else if Array.isArray @_stack
-      @_parseArrayAsStack @_stack
+  _parseStack: ->
+    messageLines = []
+    reachedTrace = no
 
-    return
+    for line in @_stack.split '\n'
+      continue if line.trim() is ''
+      if reachedTrace
+        @_trace.push @_parseTraceItem line
+      else
+        if line.match /^\s*at\s.+/
+          reachedTrace = yes
+          @_trace.push @_parseTraceItem line
+        else
+          messageLines.push line
 
-  _parseArrayAsStack: (a) ->
-    for item in a
-      @_trace.push String item
+    message = messageLines.join '\n'
+    if message.substr(0, @_kind.length) is @_kind
+      message =
+        message
+        .substr(@_kind.length, message.length)
+        .replace(/^\:\s+/, '')
 
-    return
-
-  _parseTextAsStack: (text) ->
-    # remove the error kind
-    text = text.replace /^([a-zA-Z0-9\_\$]+):\ /, ''
-
-    # remove the message, if it matches
-    if text.substr(0, @message.length) is @message
-      text = text.substr(@message.length, text.length)
-
-    text = text.trim()
-
-    for line in text.split "\n"
-      @_trace.push @_parseTraceItem line
+    @_message = message
 
     return
 

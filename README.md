@@ -1,14 +1,13 @@
-# PrettyError
+# pretty-error
 
 [![Dependency status](https://david-dm.org/AriaMinaei/pretty-error.svg)](https://david-dm.org/AriaMinaei/pretty-error)
-[![devDependency Status](https://david-dm.org/AriaMinaei/pretty-error/dev-status.svg)](https://david-dm.org/AriaMinaei/pretty-error#info=devDependencies)
 [![Build Status](https://secure.travis-ci.org/AriaMinaei/pretty-error.svg?branch=master)](https://travis-ci.org/AriaMinaei/pretty-error)
 
 [![NPM](https://nodei.co/npm/pretty-error.svg)](https://npmjs.org/package/pretty-error)
 
 A small tool to see node.js errors with less clutter:
 
-![screenshot of PrettyError](https://github.com/AriaMinaei/pretty-error/raw/master/docs/images/pretty-error-screenshot.png)
+![screenshot of pretty-error](https://github.com/AriaMinaei/pretty-error/raw/master/docs/images/pretty-error-screenshot.png)
 
 ... which is more readable compared to node's unformatted errors:
 
@@ -18,7 +17,7 @@ A small tool to see node.js errors with less clutter:
 
 Install with npm:
 
-	npm install pretty-error
+	$ npm install pretty-error
 
 ## Usage and Examples
 
@@ -27,8 +26,8 @@ To see an error rendered with colors, you can do this:
 ```javascript
 var PrettyError = require('pretty-error');
 var pe = new PrettyError();
-var renderedError = pe.render(new Error('Some error message'));
 
+var renderedError = pe.render(new Error('Some error message'));
 console.log(renderedError);
 ```
 
@@ -42,7 +41,7 @@ try {
 }
 ```
 
-But if you want to see all node errors with colors, there is a shortcut for it:
+But if you want pretty-error to render all errors, there is a shortcut for it:
 
 ```javascript
 require('pretty-error').start();
@@ -60,19 +59,19 @@ pe.start();
 
 ## How it Works
 
-PrettyError turns error objects into something similar to an html document, and then uses the upcoming [RenderKid](https://github.com/AriaMinaei/renderkid) to render the document using simple html/css-like commands. This allows PrettyError to be themed using simple css-like declarations.
+PrettyError turns error objects into something similar to an html document, and then uses [RenderKid](https://github.com/AriaMinaei/renderkid) to render the document using simple html/css-like commands. This allows PrettyError to be themed using simple css-like declarations.
 
 ## Theming
 
-PrettyError's default theme is a bunch of simple css-like declarations. [Here](https://github.com/AriaMinaei/pretty-error/blob/master/scripts/coffee/lib/prettyError/defaultStyle.coffee) is the source of the default theme.
+PrettyError's default theme is a bunch of simple css-like rules. [Here](https://github.com/AriaMinaei/pretty-error/blob/master/src/defaultStyle.coffee) is the source of the default theme.
 
-Surely, you can change all aspects of this theme. Let's do a minimal one:
+Since the default theme is all css, you can customize it to fit your taste. Let's do a minimal one:
 
 ```javascript
-// the start() shortcuts returns an instance of PrettyError ...
+// the start() shortcut returns an instance of PrettyError ...
 pe = require('pretty-error').start();
 
-// ... which we can then use to customize with css declarations:
+// ... which we can then use to customize like this:
 pe.appendStyle({
    // this is a simple selector to the element that says 'Error'
    'pretty-error > header > title > kind': {
@@ -112,7 +111,8 @@ pe.appendStyle({
 
       // Notes on bullets:
       //
-      // The string inside the quotation mark will be used for bullets.
+      // The string inside the quotation mark gets used as the character
+      // to show for the bullet point.
       //
       // You can set its color/background color using tags.
       //
@@ -147,9 +147,9 @@ pe.appendStyle({
 });
 ```
 
-Here is how our minimal theme will look like: ![screenshot of our custom theme](https://github.com/AriaMinaei/pretty-error/raw/master/docs/images/custom-theme-screenshot.png)
+This is how our minimal theme will look like: ![screenshot of our custom theme](https://github.com/AriaMinaei/pretty-error/raw/master/docs/images/custom-theme-screenshot.png)
 
-I'll post more examples on [RenderKid](https://github.com/AriaMinaei/renderkid) when it comes out of beta.
+Read [RenderKid](https://github.com/AriaMinaei/renderkid)'s docs to learn about all the css rules that are supported.
 
 ## Customization
 
@@ -170,13 +170,7 @@ pe = require('pretty-error').start();
 You might want to substitute long paths with shorter, more readable aliases:
 
 ```javascript
-pe.alias('E:/open-source/theatrejs/scripts/js', '(Theare.js)');
-
-// to remove the alias:
-pe.removeAlias('E:/open-source/theatrejs/scripts/js');
-
-// or:
-pe.removeAllAliases();
+pe.alias('E:/open-source/theatrejs/lib', '(Theare.js)');
 ```
 
 #### Skipping packages
@@ -185,10 +179,6 @@ You might want to skip trace lines that belong to specific packages (chai, when,
 
 ```javascript
 pe.skipPackage('chai', 'when', 'socket.io');
-
-// to unskip:
-pe.unskipPackage('socket.io');
-pe.unskipAllPackages();
 ```
 
 #### Skipping node files
@@ -196,19 +186,12 @@ pe.unskipAllPackages();
 ```javascript
 // this will skip node.js, path.js, event.js, etc.
 pe.skipNodeFiles();
-
-// also:
-pe.unskipNodeFiles();
 ```
 
 #### Skipping paths
 
 ```javascript
 pe.skipPath('/home/dir/someFile.js');
-
-// also:
-pe.unskipPath('/home/dir/someFile.js');
-pe.unskipAllPaths();
 ```
 
 #### Skipping by callback
@@ -227,10 +210,6 @@ pe.skip(function(traceLine, lineNumber){
    // Don't expect all these properties to be present, and don't assume
    // that our traceLine is always an object.
 });
-
-// there is also:
-pe.unskip(fn);
-pe.unskipAll();
 ```
 
 #### Modifying each trace line's contents
@@ -247,10 +226,6 @@ pe.filter(function(traceLine, lineNumber){
       );
    }
 });
-
-// there is also:
-pe.removeFilter(fn);
-pe.removeAllFilters();
 ```
 
 ## Disabling colors
@@ -337,11 +312,6 @@ process.nextTick(function(){
 });
 
 ```
-
-#### P.S.
-
-* If you're on windows, you can get better typography by using an alternative console. I use [ConEmu](http://conemu.codeplex.com).
-* Also check out [PrettyMonitor](https://github.com/AriaMinaei/pretty-monitor) if you're using [when.js](https://github.com/cujojs/when). It's PrettyError wrapped to report unhandled when.js rejections.
 
 ## License
 

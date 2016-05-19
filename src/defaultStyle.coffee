@@ -19,7 +19,7 @@ module.exports = ->
     marginRight: 1
 
   'pretty-error > header > message':
-    color: 'bright-white'
+    color: 'white'
 
   'pretty-error > trace':
     display: 'block'

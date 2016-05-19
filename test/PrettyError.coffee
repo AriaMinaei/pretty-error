@@ -5,7 +5,7 @@ defaultStyle = require '../src/defaultStyle'
 chai.should()
 
 isFormatted = (exc) ->
-  exc.stack.indexOf('  \u001b[0m\u001b[97m\u001b[41m') is 0
+  not exc.stack.match(/^[a-zA-Z\_]+/)?
 
 error = (what) ->
   if typeof what is 'string'

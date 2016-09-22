@@ -3,6 +3,7 @@
 
 /lib
 /node_modules
+/.idea
 
 -p
 

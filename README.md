@@ -1,9 +1,7 @@
 # pretty-error
 
 [![Dependency status](https://david-dm.org/AriaMinaei/pretty-error.svg)](https://david-dm.org/AriaMinaei/pretty-error)
-[![Build Status](https://secure.travis-ci.org/AriaMinaei/pretty-error.svg?branch=master)](https://travis-ci.org/AriaMinaei/pretty-error)
-
-[![NPM](https://nodei.co/npm/pretty-error.svg)](https://npmjs.org/package/pretty-error)
+[![Build Status](https://secure.travis-ci.org/AriaMinaei/pretty-error.svg?branch=master)](https://travis-ci.org/AriaMinaei/pretty-error) [![npm](https://img.shields.io/npm/dm/pretty-error.svg)](https://npmjs.org/package/pretty-error)
 
 A small tool to see node.js errors with less clutter:
 

@@ -258,7 +258,7 @@ var server = app.listen(3000, function(){
 
 
 // we can now instantiaite Prettyerror:
-pe = new PrettyError();
+var pe = new PrettyError();
 
 // and use it for our app's error handler:
 app.use(function(err, req, res, next){

@@ -55,6 +55,12 @@ var pe = new PrettyError();
 pe.start();
 ```
 
+You can also preload pretty-error into your code using node's [`--require`](https://nodejs.org/api/cli.html#cli_r_require_module) argument:
+
+```
+$ node --require pretty-error/start your-module.js
+```
+
 ## How it Works
 
 PrettyError turns error objects into something similar to an html document, and then uses [RenderKid](https://github.com/AriaMinaei/renderkid) to render the document using simple html/css-like commands. This allows PrettyError to be themed using simple css-like declarations.

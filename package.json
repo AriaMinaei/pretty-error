@@ -1,6 +1,6 @@
 {
   "name": "pretty-error",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "See nodejs errors with less clutter",
   "main": "./lib/PrettyError.js",
   "typings": "index.d.ts",

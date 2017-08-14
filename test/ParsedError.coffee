@@ -33,6 +33,11 @@ describe "ParsedError", ->
       e = new ParsedError error 'a'
       e.message.should.equal 'a'
 
+  describe "multiline message", ->
+    it "should return the original error message", ->
+      e = new ParsedError error 'a \n b \n c'
+      e.message.should.equal 'a \n b \n c'
+
   describe "kind", ->
     it "should return 'Error' for normal error", ->
       e = new ParsedError error 'a'

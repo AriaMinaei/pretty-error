@@ -22,10 +22,9 @@ module.exports = class ParsedError
         if m = @_stack.match /^([a-zA-Z0-9\_\$]+):\ /
           @_kind = m[1]
 
+      @_message = @error.message? and String(@error.message) or ''
       if typeof @_stack is 'string'
         @_parseStack()
-      else
-        @_message = @error.message? and String(@error.message) or ''
 
     return
 
@@ -41,7 +40,7 @@ module.exports = class ParsedError
         if line.match /^\s*at\s.+/
           reachedTrace = yes
           @_trace.push @_parseTraceItem line
-        else
+        else if !@_message.split '\n'.indexOf line
           messageLines.push line
 
     message = messageLines.join '\n'
@@ -51,7 +50,14 @@ module.exports = class ParsedError
         .substr(@_kind.length, message.length)
         .replace(/^\:\s+/, '')
 
-    @_message = message
+    if message.length
+      @_message = if @_message.length
+      then [
+        @_message
+        message
+      ].join '\n'
+      else
+        message
 
     return
 

@@ -19,10 +19,10 @@ declare module 'pretty-error' {
             aliases?:boolean | Object
         }
 
-        interface Callback {
+        type Callback = (
             traceLine:Object | any,
             lineNumber:number
-        }
+        ) => boolean
     }
 
     class PrettyError {

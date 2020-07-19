@@ -3,8 +3,6 @@
 [![Dependency status](https://david-dm.org/AriaMinaei/pretty-error.svg)](https://david-dm.org/AriaMinaei/pretty-error)
 [![Build Status](https://secure.travis-ci.org/AriaMinaei/pretty-error.svg?branch=master)](https://travis-ci.org/AriaMinaei/pretty-error) [![npm](https://img.shields.io/npm/dm/pretty-error.svg)](https://npmjs.org/package/pretty-error)
 
-> **Help wanted:** *Please try out `pretty-error@2.2.0-rc.1` and give a 👍/👎 [here](https://github.com/AriaMinaei/pretty-error/pull/49) if it works as expected.*
-
 A small tool to see node.js errors with less clutter:
 
 ![screenshot of pretty-error](https://github.com/AriaMinaei/pretty-error/raw/master/docs/images/pretty-error-screenshot.png)

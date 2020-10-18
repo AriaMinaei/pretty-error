@@ -174,7 +174,7 @@ pe = require('pretty-error').start();
 You might want to substitute long paths with shorter, more readable aliases:
 
 ```javascript
-pe.alias('E:/open-source/theatrejs/lib', '(Theare.js)');
+pe.alias('E:/open-source/theatrejs/lib', '(Theatre.js)');
 ```
 
 #### Skipping packages

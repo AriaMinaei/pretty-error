@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "lodash": "^4.17.20",
-    "renderkid": "^2.0.4"
+    "renderkid": "^2.0.5"
   },
   "devDependencies": {
     "coffee-script": "~1.8.0",
     "chai": "~1.9.2",
-    "mocha": "~2.0.1",
+    "mocha": "^5.2.0",
     "jitter": "^1.3.0"
   },
   "author": "Aria Minaei",

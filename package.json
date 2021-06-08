@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.20",
-    "renderkid": "^2.0.5"
+    "renderkid": "^2.0.6"
   },
   "devDependencies": {
     "chai": "~1.9.2",

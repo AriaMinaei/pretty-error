@@ -1,0 +1,11 @@
+*.bat
+.htaccess
+
+/lib
+/node_modules
+/.idea
+
+-p
+
+npm-debug.log
+!*.gitkeep

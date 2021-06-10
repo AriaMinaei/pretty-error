@@ -1,0 +1,15 @@
+{
+  "name": "pretty-error-bare-workflow",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "pretty-error": "^3.0.4",
+    "renderkid": "^2.0.7-dev.2"
+  }
+}

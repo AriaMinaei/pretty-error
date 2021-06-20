@@ -63,6 +63,7 @@ module.exports = class PrettyError
     instance?.stop()
 
   constructor: ->
+    @_stripBeforeColon = yes
     @_useColors = yes
     @_maxItems = 50
     @_packagesToSkip = []
@@ -86,7 +87,7 @@ module.exports = class PrettyError
     # https://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
     Error.prepareStackTrace = (exc, trace) =>
       stack = prepeare.apply(null, arguments)
-      @render {stack, message: exc.toString().replace /^.*: /, ''}, no
+      @render {stack, message: if @_stripBeforeColon then exc.toString().replace /^.*: /, '' else exc }, no
 
     @
 
@@ -112,7 +113,7 @@ module.exports = class PrettyError
         @unskipAll()
       else
         @skip.apply @, c.skip
-
+        
     if c.maxItems?
       @setMaxItems c.maxItems
 
@@ -138,6 +139,12 @@ module.exports = class PrettyError
         @alias path, alias for path, alias of c.aliases
       else if c.aliases is no
         @removeAllAliases()
+
+    if c.stripBeforeColon?
+      if c.stripBeforeColon is yes
+        @stripBeforeColon()
+      else
+        @dontStripBeforeColon()
 
     @
 
@@ -228,6 +235,14 @@ module.exports = class PrettyError
     arrayUtils.pluckByCallback @_aliases, (pair) ->
       pair.stringOrRx is stringOrRx
 
+    @
+    
+  stripBeforeColon: () ->
+    @_stripBeforeColon = yes
+    @
+    
+  dontStripBeforeColon: () ->
+    @_stripBeforeColon = no
     @
 
   removeAllAliases: ->

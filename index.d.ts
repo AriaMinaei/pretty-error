@@ -19,6 +19,7 @@ declare module 'pretty-error' {
             | PrettyError.Callback
             | PrettyError.Callback[];
             aliases?: boolean | Object;
+            stripBeforeColon?: boolean;
         }
 
         type Callback = (traceLine: Object | any, lineNumber: number) => boolean;
@@ -54,6 +55,8 @@ declare module 'pretty-error' {
         removeAlias(stringOrRx: string): PrettyError;
         removeAllAliases(): PrettyError;
         appendStyle(toAppend: Object): PrettyError;
+        stripBeforeColon(): PrettyError;
+        dontStripBeforeColon(): PrettyError;
         render(
             e: PrettyError.ParsedError,
             logIt?: boolean,

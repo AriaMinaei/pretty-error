@@ -14,8 +14,8 @@
     "prepublish": "npm run compile"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
-    "renderkid": "^2.0.5"
+    "lodash": "^4.17.21",
+    "renderkid": "^2.0.7"
   },
   "devDependencies": {
     "coffee-script": "~1.8.0",

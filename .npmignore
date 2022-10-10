@@ -9,3 +9,9 @@ docs
 
 npm-debug.log
 !*.gitkeep
+
+.github
+src
+test
+.mocharc.yaml
+.travis.yml

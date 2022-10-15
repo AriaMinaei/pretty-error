@@ -5,7 +5,7 @@ nodePaths = require './nodePaths'
 RenderKid = require 'renderkid'
 merge = require 'lodash/merge'
 
-arrayUtils = 
+arrayUtils =
   pluckByCallback: (a, cb) ->
     return a if a.length < 1
     removed = 0
@@ -62,7 +62,7 @@ module.exports = class PrettyError
   @stop: ->
     instance?.stop()
 
-  constructor: ->
+  constructor: (opts = { extraNewlines: true })->
     @_useColors = yes
     @_maxItems = 50
     @_packagesToSkip = []
@@ -71,7 +71,9 @@ module.exports = class PrettyError
     @_filterCallbacks = []
     @_parsedErrorFilters = []
     @_aliases = []
-    @_renderer = new RenderKid
+
+    renderKidConfig = { layout: { extraNewlines: opts.extraNewlines } }
+    @_renderer = new RenderKid renderKidConfig
     @_style = self._getDefaultStyle()
     @_renderer.style @_style
 

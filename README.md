@@ -237,6 +237,12 @@ pe.filter(function(traceLine, lineNumber){
 pe.withoutColors(); // Errors will be rendered without coloring
 ```
 
+## Disabling extra newlines between stack frames
+```javascript
+var PrettyError = require('pretty-error');
+var pe = new PrettyError({ extraNewlines: false });
+```
+
 ## Integrating with frameworks
 
 PrettyError is very simple to set up, so it should be easy to use within other frameworks.

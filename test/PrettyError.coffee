@@ -79,6 +79,21 @@ describe "PrettyError", ->
       e = error -> "a".should.equal "b"
       console.log p.render e, no
 
+    it "should omit newlines if opts.extraNewlines is false", ->
+      p = new PrettyError({ extraNewlines: false })
+      p.withoutColors()
+      p.skipPackage('mocha')
+
+      f1 = () -> throw new Error('test error')
+      f2 = () -> f1()
+      f3 = () -> f2()
+
+      try
+        f3()
+      catch exc
+        rendered = p.render exc, no
+        rendered.split(/\n/g).length.should.be.eql 12
+
   describe "start()", ->
     prepareStackTrace = null
 
